@@ -77,6 +77,12 @@ html, body {
   height: 100%;
 }
 
+.page{
+    cursor: pointer;
+    
+}
+
+
 /* line 407, ../bower_components/foundation/scss/foundation/components/_global.scss */
 *,
 *:before,
