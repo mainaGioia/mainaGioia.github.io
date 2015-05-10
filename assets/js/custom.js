@@ -98,7 +98,12 @@ $(document).ready(function() {
 
    
     function openPage(r, e){
-        var tfm = 'S2,0, 0,2,0';
+        e.toggleClass('big');
+        console.log(e.attr("class"));
+        console.log(e[0].tagName);
+        
+        
+        var tfm = 'S 2,1, 2, 2';
         var w = r.attr('width');
         r.transform(tfm);
     }
