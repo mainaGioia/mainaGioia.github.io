@@ -61,7 +61,8 @@ $(document).ready(function() {
                 {
                     'stroke-width': 2,
                 }).click(function(){
-                openPage(this, $(this));
+                    /*$(this.node).attr('class', 'big page');*/
+                    openPage(this, $(this));
             })
             var incr = 20*i;
             var newheight = (height-101-incr);
@@ -97,15 +98,29 @@ $(document).ready(function() {
     };
 
    
+    
+    function toggleClass(el, name){
+        if(el.node.classList[0] == name)
+            console.log('o cazz');
+        
+    };
+    
     function openPage(r, e){
-        e.toggleClass('big');
-        console.log(e.attr("class"));
-        console.log(e[0].tagName);
+        var jq = $(r.node);
+        jq.addClass('big stronzo');
+        console.log(jq.attr('class'));
+
+        
+        
+
+        /*r.prev.node.classList*/
         
         
         var tfm = 'S 2,1, 2, 2';
         var w = r.attr('width');
         r.transform(tfm);
+        jq.removeClass('stronzo');
+        console.log(jq.attr('class'));
     }
   
     
@@ -120,6 +135,15 @@ $(document).ready(function() {
         this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) )+"px");
         this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
                                                 $(window).scrollLeft()) + "px");
+    }
+    
+    
+    
+    
+    
+    var toggleClass = $.fn.toggleClass;
+    $.fn.toggleClass = function(value){
+        
     }
 
 });
