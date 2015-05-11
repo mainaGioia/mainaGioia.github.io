@@ -82,8 +82,8 @@ html, body {
     /*highligh maybe*/
 }
 
-.page.big :hover path{
-    fill:'#ffba30';
+.page.big {
+transform: rotate(360deg);
 }
 
 

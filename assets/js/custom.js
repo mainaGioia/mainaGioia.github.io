@@ -107,14 +107,14 @@ $(document).ready(function() {
             jq.removeClass('big');
             console.log("Ho rimosso big ");
             /*r.transform('s2,2');*/
-            r.animate({ transform: 's1,1' }, 2000)
+            r.animate({ transform: 's1,1' }, 1000)
         }
         else{
             jq.addClass('big');
             console.log("ho aggiunto big");
             /*r.transform('s2,2');*/
             /*r.animate({ transform: 't100,50r90,50,50' }, 5000)        */
-            r.animate({ transform: 's2,2' }, 2000)        
+            r.animate({ transform: 's2,2,0,400' }, 1000)        
         }
         
         
