@@ -47,7 +47,6 @@
                 var classes = $(el).attr('class');
                 if(classes){
                     var index = classes.indexOf(value);
-                    console.log("ho trovato la classe in "+ index);
                     if(index !== -1){
                         classes = classes.substring(0, index) + classes.substring((index+value.length), classes.length);
                         this.attr('class', classes);
@@ -64,6 +63,8 @@
     $.fn.hasClass = function(value) {
         var orig = hasClass.apply(this, arguments);
  
+        console.log("hasclass....");
+
         var el,
             i = 0,
             len = this.length;
@@ -72,6 +73,7 @@
             el = this[ i ];
             if ( el instanceof SVGElement ) {
                 var classes = $(el).attr('class');
+                console.log(classes);
                 if ( classes ) {
                     if ( classes.indexOf(value) === -1 ) {
                         return false;
@@ -81,10 +83,13 @@
                 } else 
                     return false;
         
-      }
-    }
-    return orig;
-  };
+            }
+        }
+        return orig;
+    };
+    
+    
+    
 
 
 

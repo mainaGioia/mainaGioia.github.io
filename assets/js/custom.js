@@ -99,28 +99,34 @@ $(document).ready(function() {
 
    
     
-    function toggleClass(el, name){
-        if(el.node.classList[0] == name)
-            console.log('o cazz');
-        
-    };
+    
     
     function openPage(r, e){
         var jq = $(r.node);
-        jq.addClass('big stronzo');
-        console.log(jq.attr('class'));
-
+        if(jq.hasClass('big')){
+            jq.removeClass('big');
+            console.log("Ho rimosso big ");
+            /*r.transform('s2,2');*/
+            r.animate({ transform: 's1,1' }, 2000)
+        }
+        else{
+            jq.addClass('big');
+            console.log("ho aggiunto big");
+            /*r.transform('s2,2');*/
+            /*r.animate({ transform: 't100,50r90,50,50' }, 5000)        */
+            r.animate({ transform: 's2,2' }, 2000)        
+        }
+        
         
         
 
         /*r.prev.node.classList*/
         
         
-        var tfm = 'S 2,1, 2, 2';
+        /*var tfm = 'S 2,1, 2, 2';
         var w = r.attr('width');
         r.transform(tfm);
-        jq.removeClass('stronzo');
-        console.log(jq.attr('class'));
+        jq.removeClass('stronzo');*/
     }
   
     
@@ -135,15 +141,10 @@ $(document).ready(function() {
         this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) )+"px");
         this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
                                                 $(window).scrollLeft()) + "px");
-    }
+    };
     
     
     
     
     
-    var toggleClass = $.fn.toggleClass;
-    $.fn.toggleClass = function(value){
-        
-    }
-
 });

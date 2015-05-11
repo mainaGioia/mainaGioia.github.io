@@ -78,9 +78,14 @@ html, body {
 }
 
 .page{
-    cursor: pointer
+    cursor: pointer;
     /*highligh maybe*/
 }
+
+.page.big :hover path{
+    fill:'#ffba30';
+}
+
 
 .activepage{
     
