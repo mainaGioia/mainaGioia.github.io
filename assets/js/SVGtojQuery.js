@@ -4,8 +4,6 @@
     var addClass = $.fn.addClass;
     $.fn.addClass = function(value){
         var o = addClass.apply(this, arguments);
-        console.log(o);
-        console.log(arguments);
         
         var el,
             i = 0,
@@ -63,8 +61,6 @@
     $.fn.hasClass = function(value) {
         var orig = hasClass.apply(this, arguments);
  
-        console.log("hasclass....");
-
         var el,
             i = 0,
             len = this.length;
@@ -73,7 +69,6 @@
             el = this[ i ];
             if ( el instanceof SVGElement ) {
                 var classes = $(el).attr('class');
-                console.log(classes);
                 if ( classes ) {
                     if ( classes.indexOf(value) === -1 ) {
                         return false;

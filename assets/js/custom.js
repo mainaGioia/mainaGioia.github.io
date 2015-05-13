@@ -1,6 +1,9 @@
 $(document).ready(function() {
     
     var numSections = 4;
+    var xaxis = 130;
+    var yaxis = 100;
+    var increasing = 20;
     
     var x = ($(window).width() / 10) -5;
     var y = 0;
@@ -64,13 +67,13 @@ $(document).ready(function() {
                     /*$(this.node).attr('class', 'big page');*/
                     openPage(this, $(this));
             })
-            var incr = 20*i;
+            var incr = increasing*i;
             var newheight = (height-101-incr);
             var end = (newheight.toString()).split(".")[0]+'.01';
             circle.animate(
                 {
                     path: 'M'+(1+i)+' '+newheight+','+ 
-                            'A'+(130+incr)+' '+(100+incr)+' 0 1 0 '+(1+i)+' '+end
+                            'A'+(xaxis+incr)+' '+(yaxis+incr)+' 0 1 0 '+(1+i)+' '+end
                     //path: 'M0 '+height+', A200,200,0,0,1,300,150'
                 }, 1500, 'linear',
                 function(){
@@ -81,7 +84,7 @@ $(document).ready(function() {
             
             var c = $(circle.node);
             c.attr('class', 'page');
-            c.attr('id', ids[i]);            
+            c.attr('id', i+ids[i]); 
             
             var hoverIn = function() {
                 this.attr({"stroke": '#E3E3E3'});
@@ -113,8 +116,17 @@ $(document).ready(function() {
             jq.addClass('big');
             console.log("ho aggiunto big");
             /*r.transform('s2,2');*/
-            /*r.animate({ transform: 't100,50r90,50,50' }, 5000)        */
-            r.animate({ transform: 's2,2,0,400' }, 1000)        
+            /*r.animate({ transform: 't100,50r90,50,50' }, 5000)  
+            */
+            var i = jq.attr('id').substring(0,1);
+            var incr = i*2+3+parseInt(i);
+            var bb= r.getBBox();
+            var getw = Math.ceil(bb.width);
+            var geth = bb.height;
+            var ratiow = $('svg').width()/(2+parseFloat(getw));
+            console.log("getw: "+getw );
+            console.log('t'+(incr)+ " questo incr:"+ incr);
+            r.animate({ transform: 't-'+(incr)+',0s'+ratiow+',1,0,400' }, 1000)        
         }
         
         
