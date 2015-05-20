@@ -84,6 +84,11 @@ html, body {
     left:25%;
 }
 
+.line{
+    fill: none;
+    stroke: #000;
+    
+}
 
 .textmenu{
     font-family: moonflower, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;

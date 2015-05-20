@@ -68,6 +68,7 @@ $(document).ready(function() {
             //.attr('left', function(d, i){return distance*i})
             
         
+    var circlesheight = canvas.height()/1.5;
         
     var paths = circles.append('path')
                 .attr('d', arc)
@@ -75,7 +76,7 @@ $(document).ready(function() {
                 .style('fill', function(d, i){return colors[i]})
                 .attr("transform", function(d,i){
                     return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                    + ","+parseFloat(canvas.height()/1.5)+")"})
+                    + ","+circlesheight+")"})
                 .on("click", function(d){openPage(d);});
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
@@ -131,6 +132,23 @@ $(document).ready(function() {
                     .text(function(d){return d});
     
     
+    var points = [
+        [0, circlesheight],
+        [distance*numSections, circlesheight],
+        [canvas.width()-100, canvas.height()/2]
+        /*[780, 300],
+        [180, 300],
+        [280, 100],
+        [380, 400]*/
+    ];
+    
+    var path = svg.append("path")
+        .data([points])
+        .attr('class', 'line')
+        .attr("d", d3.svg.line()
+        .tension(0) // Catmull–Rom
+        .interpolate("monotone"));
+ 
                   
                   
     function openPage(page){
@@ -141,7 +159,16 @@ $(document).ready(function() {
                 .duration(3000)
                 //bell'effetto
                 //.attr("transform", "translate(320, 0)")
-                .attr("transform", "translate("+(totWidth/3-30)+", 200), rotate(-45), scale(0.7)");
+                .attr("transform", function(d, i){ 
+                        if(d === page){
+                            console.log(d+' '+page);
+                            return "translate("+(totWidth-(distance*numSections)-100)+
+                                ", 200), rotate(-90), scale(0.7)";
+                        }
+                        else
+                            return "translate("+(totWidth-(distance*numSections)+100)+
+                                ", 400), rotate(-"+(90+2*i)+"), scale(0.5)";
+                })
                  
         
         //if(page === 'resume')
