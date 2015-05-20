@@ -14,7 +14,8 @@ $(document).ready(function() {
     canvas.css('left', x);
     canvas.css('top', y);
     canvas.css('right', x);
-    canvas.css('height', height);
+    canvas.css('height', height)
+    canvas.css('width', width);
     
     
     var circles;
@@ -26,6 +27,9 @@ $(document).ready(function() {
     var stroke = 2;
     //spanforcircle |-----|-----|
     var distance = 200;
+    var margin = 50;
+    var circlesheight = canvas.height()/1.5;
+
 
     
     
@@ -64,19 +68,18 @@ $(document).ready(function() {
   			.enter().append("g")
     		.attr("class", "circle")
             .attr("id", function(d){return d;})
-            .attr('width', function(d){return distance});
+            .attr('width', function(d){return distance})
+            .attr("transform", function(d,i){
+                    return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                    + ","+circlesheight+")"});
             //.attr('left', function(d, i){return distance*i})
             
         
-    var circlesheight = canvas.height()/1.5;
         
     var paths = circles.append('path')
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]})
-                .attr("transform", function(d,i){
-                    return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                    + ","+circlesheight+")"})
                 .on("click", function(d){openPage(d);});
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
@@ -110,10 +113,7 @@ $(document).ready(function() {
                 .attr('id', function(d,i){return 'text-path'+i})
                 .attr('class', 'clippath')
                 .attr('d', function(d,i){return arc(i)})
-                .attr("transform", function(d,i){
-                        return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                        + ","+parseFloat(canvas.height()/1.5)+")"});
-    
+           
 
     var text = paths.append("clipPath")
                         .attr('id', function(d,i){return 'text-clip'+i})
@@ -132,34 +132,78 @@ $(document).ready(function() {
                     .text(function(d){return d});
     
     
+    var margin_right = (canvas.width()-(distance*numSections) ) / 2;
+    var end_circles = distance*numSections;
+    
     var points = [
-        [0, circlesheight],
-        [distance*numSections, circlesheight],
-        [canvas.width()-100, canvas.height()/2]
-        /*[780, 300],
-        [180, 300],
-        [280, 100],
-        [380, 400]*/
+        [distance/2, circlesheight],
+        /*[distance+distance/2, circlesheight],
+        [distance*2+distance/2, circlesheight],
+        [distance*3+distance/2, circlesheight],*/
+        [end_circles+margin, circlesheight-5],
+        [end_circles+margin_right-(margin*2), canvas.height()/1.7],
+        [end_circles+margin_right-margin, canvas.height()/3],  //4
+        [end_circles+margin_right-(margin*1.3), margin+20],  //5
+        [end_circles+margin_right-margin*2.8, margin-15],   //6
+        [end_circles+margin_right-(margin*4), margin*1.4], //7
+        [end_circles+margin_right-(margin*3.9), margin*2.6], //8
+        [end_circles+margin_right-(margin*2.8), margin*3.3], //9
+        [end_circles+margin_right-(margin*1.5), margin*3], //10
+        [end_circles+margin_right-(margin*1.2), margin*2], //11
+        [end_circles+margin_right-(margin*1.5), margin*1.2], //12
+        [end_circles+margin_right-(margin*2.5), margin-10], //8
+        [end_circles+margin_right-(margin*3.5), margin*1.2], //8
+        [end_circles+margin_right-(margin*3.8), margin*2], //8
+        [end_circles+margin_right-(margin*3.5), margin*2.5], //8
+        [end_circles+margin_right-(margin*3.4), margin*2.6] //8
+       
     ];
     
-    var path = svg.append("path")
-        .data([points])
+    
+    
+
+    
+    var path = d3.select("svg").append("path")
+        .datum(points)
         .attr('class', 'line')
-        .attr("d", d3.svg.line()
-        .tension(0) // Catmull–Rom
-        .interpolate("monotone"));
+        .attr('d', d3.svg.line().interpolate('cardinal'))
+        .attr("transform", 'translate('
+                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
+ 
+    
+    
+    
+        var point = svg.selectAll("point")
+            .data(points, function(d) { return d; });
+
+        point.enter().append("circle")
+            .attr("r", 1e-6)
+            .attr('class', 'point')
+            .transition()
+            .duration(750)
+            .ease("elastic")
+            .attr("r", 6.5);
+
+        point
+            .attr("cx", function(d) { return d[0]; })
+            .attr("cy", function(d) { return d[1]; });
+
+        point.exit().remove();
+
+        
+
  
                   
                   
     function openPage(page){
-        console.log(page);
         if(page === 'contacts')
             $('.social_row').toggle();
         circles.transition()
                 .duration(3000)
+                .attrTween("transform", translateAlong(path.node()))
                 //bell'effetto
                 //.attr("transform", "translate(320, 0)")
-                .attr("transform", function(d, i){ 
+                /*.attr("transform", function(d, i){ 
                         if(d === page){
                             console.log(d+' '+page);
                             return "translate("+(totWidth-(distance*numSections)-100)+
@@ -168,13 +212,24 @@ $(document).ready(function() {
                         else
                             return "translate("+(totWidth-(distance*numSections)+100)+
                                 ", 400), rotate(-"+(90+2*i)+"), scale(0.5)";
-                })
+                })*/
                  
         
         //if(page === 'resume')
             
             
-    };
+    }
+    
+    
+    function translateAlong(path) {
+        var l = path.getTotalLength();
+        return function(d, i, a) {
+            return function(t) {
+                var p = path.getPointAtLength(t * l);
+                return "translate(" + p.x + "," + p.y + ")";
+            };
+        };
+    }
 /*          
     circles.append("path")
             .data(ids)

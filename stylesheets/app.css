@@ -107,8 +107,16 @@ html, body {
 }
 
 
-.activepage{
+.point{
+    stroke:black;
+    visibility: hidden;
     
+}
+
+
+.line{
+        visibility: hidden;
+
 }
 
 
