@@ -77,12 +77,28 @@ html, body {
   height: 100%;
 }
 
-.page{
+
+
+.circles{
+    width:50%;
+    left:25%;
+}
+
+
+.textmenu{
+    font-family: moonflower, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-size: 22px;
+}
+.circle{
     cursor: pointer;
+    stroke-width: 3;
+    stroke: black;
+
     /*highligh maybe*/
 }
 
-.page.big {
+.menupath{
+    visibility: hidden;
 }
 
 

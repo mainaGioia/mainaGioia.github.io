@@ -1,90 +1,195 @@
 $(document).ready(function() {
     
-    var numSections = 4;
-    var xaxis = 130;
-    var yaxis = 100;
-    var increasing = 20;
     
-    var x = ($(window).width() / 10) -5;
+    
+    //margine sinistro
+    //var x = ($(window).width() / 10);
+    var x = 0;
     var y = 0;
-    var height = $(window).height() / 1.2; 
-    var width = '90%';
+    var width = '100%';
+    var height = '100%';
     
     var canvas = $('#canvas');
     canvas.css('position', 'absolute');
     canvas.css('left', x);
     canvas.css('top', y);
-    canvas.css('width', width);
+    canvas.css('right', x);
     canvas.css('height', height);
-
     
-
-    var paper = Raphael("canvas", width, height);
     
-    /*var g = $(document.createElement('g'));
-    g.addClass('pages');
-    $('svg').append(g);*/
-    
-    var line = paper.path('M0 0');
-    
-    var circles = new Array();
-    var colours = ['#fff59b', '#ff6f69', '#88d8b0', '#ffcc5c'];
+    var circles;
+    var colors = ['#fff59b', '#ff6f69', '#88d8b0', '#ffcc5c'];
     var ids = ['about', 'resume', 'blog', 'contacts'];
+    var totWidth = canvas.width();
+    var numSections = ids.length;
+    var radius = 50;
+    var stroke = 2;
+    //spanforcircle |-----|-----|
+    var distance = 200;
 
     
-    //g.append(line);
+    
+    var svg = d3.select("#canvas").append("svg")
+            .attr("width",  width)
+            .attr("height", height)
+            .append("g")
+                .attr("class", "circles")
+                .attr('width', (distance*numSections)+'px')
+                .attr("transform", 'translate('
+                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
+                //.attr('left', ((totWidth-spanforcircle*numSections)/2)+'px');
+//                .attr("transform", function(d,i){
+//                    console.log(parseFloat(distance*i)+parseFloat(distance/2));
+//                    console.log(parseFloat(canvas.height()/2));
+//                    return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+//                    + ","+parseFloat(canvas.height()/2)+")"});
+
+    
+    var arc = d3.svg.arc()
+            .innerRadius(0)
+            .outerRadius(radius)
+            .startAngle(0)
+            .endAngle(7);
+   
+    
+    var menu = d3.svg.arc()
+            .innerRadius(radius)
+            .outerRadius(radius+30)
+            .startAngle(0)
+            .endAngle(7)
+
+    
+    circles = svg.selectAll(".circle")
+            .data(ids)
+  			.enter().append("g")
+    		.attr("class", "circle")
+            .attr("id", function(d){return d;})
+            .attr('width', function(d){return distance})
+            //.attr('left', function(d, i){return distance*i})
+            .append('path')
+                    .attr('d', arc)
+                    .attr('id', function(d, i){return i+d})
+                    .style('fill', function(d, i){return colors[i]})
+                    .attr("transform", function(d,i){
+                        return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                        + ","+parseFloat(canvas.height()/2)+")"})
+                    .on("click", function(d){openPage(d)});
+                   /* .attr("cy", canvas.height()/2)
+                    .attr("cx", function(d,i){return distance*i+distance/2;})
+                    .attr('r', radius)
+                    .attr('id', function(d, i){return i+d})
+                    .style('fill', function(d, i){return colors[i]})
+                    .on("click", function(d){openPage(d)});*/
+                    
+                    //.style("display", function(d, i){ if(i<2) return "inline"; else return "none";});
+
+    
+    svg.selectAll('.circle')
+            .data(ids)
+            .append('path')
+                .attr('class', 'menupath')
+                .attr('d', menu)
+                .attr('id', function(d){return d+'path'})
+                /*.attr('stroke', '#f2f2f2')*/
+                .attr("transform", function(d,i){
+                        return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                        + ","+parseFloat(canvas.height()/2)+")"});
     
     
-    line.attr(
-        {
-            'stroke-width': 4,
-            class: 'page'
-        });
+            
     
-    line.animate(
-        {
-            path: 'M0 0, l 0 '+(height-100)
-        }, 2000, 'linear', 
-        function(){
-            var name = $('#name');
-            /*name.removeClass('hidden');*/
-            name.css('position', 'absolute');
-            name.css('left', x+20);
-            name.css('top', ((height-60) - name.css('height').split("px")[0]));
-            drawCircles(circles, 0);
-        }
-    );
+    /* text */ 
     
+    var paths = svg.append("defs");
+    
+    paths.selectAll('.clippath')
+            .data(ids)
+            .enter().append("path")
+                .attr('id', function(d,i){return 'text-path'+i})
+                .attr('class', 'clippath')
+                .attr('d', function(d,i){return arc(i)})
+                .attr("transform", function(d,i){
+                        return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                        + ","+parseFloat(canvas.height()/2)+")"});
+    
+
+    var text = svg.selectAll('.circle')
+            .append("clipPath")
+                .attr('id', function(d,i){return 'text-clip'+i})
+                .append('use')
+                    .attr("xlink:href", function(d, i){ return "#"+d+'path';})
+   
+    
+    svg.selectAll('.circle')
+            .append("text")
+                .attr('clip-path', function(d, i){return "url(#text-clip"+i+')'})
+                .attr('class', 'textmenu')
+                .attr('x', 170)
+                .attr('dy', -10)
+                .style('stroke-width', 1)
+                .append('textPath')
+                    .attr("xlink:href", function(d, i){ return "#text-path"+i;})
+                    .text(function(d){return d});
+    
+    
+                  
+                  
+    function openPage(page){
+        console.log(page);
+    };
+/*          
+    circles.append("path")
+            .data(ids)
+            .attr("class", function(d, i) { return i+d; })
+            .attr("d", function(d) { return line(d.values); })
+            .style("stroke", function(d, i) { return colors(i); })
+            .style("stroke-width", "2px")
+            .style("fill", "none")*/
+
+    
+    /*
     function drawCircles(circles, i){
         if(i < numSections){
-            var circle = paper.path('M0 '+(height-100));
+            var margin = 5;
+            var circle = paper.path('M'+(distance*i)+','+heightc);
+            circles[i] = circle;
             //g.append(lines[i]);
-            circle.toBack();
+            //circle.toBack();
+            //var gg = $(document.createElement('g'));
+            //gg.attr('class','page');
+            //gg.attr('id', i+ids[i]);
+            var gg = makeSVG('g', {class:page, id:i+ids[i]);
+            console.log(circle);
+            console.log($(circle.node)[0]);
+            gg.append($(circle.node)[0]);
+            g.append(gg);
             circle.attr(
                 {
-                    'stroke-width': 2,
+                    //'stroke-width': 2,
                 }).click(function(){
                     /*$(this.node).attr('class', 'big page');*/
-                    openPage(this, $(this));
+    /*                openPage(this, $(this));
             })
-            var incr = increasing*i;
-            var newheight = (height-101-incr);
+            //var incr = increasing*i;
+            //var newheight = (height-101-incr);
+            var newheight = (heightc-101);
             var end = (newheight.toString()).split(".")[0]+'.01';
             circle.animate(
                 {
-                    path: 'M'+(1+i)+' '+newheight+','+ 
-                            'A'+(xaxis+incr)+' '+(yaxis+incr)+' 0 1 0 '+(1+i)+' '+end
-                    //path: 'M0 '+height+', A200,200,0,0,1,300,150'
-                }, 1500, 'linear',
+                    //path: 'M'+(1+i)+' '+newheight+','+ 
+                          //  'A'+(xaxis+incr)+' '+(yaxis+incr)+' 0 1 0 '+(1+i)+' '+end
+                    path: 'M'+((distance*i))+' '+newheight+','+ 
+                            'A'+xaxis+' '+yaxis+' 0 1 0 '+((distance*i))+' '+end
+                }, 800, 'linear',
                 function(){
                     circle.attr({ 'fill': colours[i]});
                     drawCircles(circles,i+1);
                 }
             );
             
-            var c = $(circle.node);
-            c.attr('class', 'page');
-            c.attr('id', i+ids[i]); 
+            //var c = $(circle.node);
+            //c.attr('class', 'page');
+            //c.attr('id', i+ids[i]); 
             
             var hoverIn = function() {
                 this.attr({"stroke": '#E3E3E3'});
@@ -99,9 +204,9 @@ $(document).ready(function() {
         }
        
     };
-
+*/
    
-    
+  /*  
     
     
     function openPage(r, e){
@@ -110,7 +215,7 @@ $(document).ready(function() {
             jq.removeClass('big');
             console.log("Ho rimosso big ");
             /*r.transform('s2,2');*/
-            r.animate({ transform: 's1,1' }, 1000)
+/*            r.animate({ transform: 'S1,1' }, 1000)
         }
         else{
             jq.addClass('big');
@@ -118,44 +223,20 @@ $(document).ready(function() {
             /*r.transform('s2,2');*/
             /*r.animate({ transform: 't100,50r90,50,50' }, 5000)  
             */
-            var i = jq.attr('id').substring(0,1);
+/*            var i = jq.attr('id').substring(0,1);
             var incr = i*2+3+parseInt(i);
             var bb= r.getBBox();
             var getw = Math.ceil(bb.width);
             var geth = bb.height;
             var ratiow = $('svg').width()/(2+parseFloat(getw));
+            //var ratioh = $('svg').height()/(parseFloat(geth));
             console.log("getw: "+getw );
             console.log('t'+(incr)+ " questo incr:"+ incr);
             r.animate({ transform: 't-'+(incr)+',0s'+ratiow+',1,0,400' }, 1000)        
         }
         
         
-        
-
-        /*r.prev.node.classList*/
-        
-        
-        /*var tfm = 'S 2,1, 2, 2';
-        var w = r.attr('width');
-        r.transform(tfm);
-        jq.removeClass('stronzo');*/
-    }
-  
-    
-   /* function svgEl(tagName){
-        return document.createElementNS("http://www.w3.org/2000/svg", tagName);
-    }*/
-    
-    
-    
-    jQuery.fn.center = function() {
-        this.css("position", "absolute");
-        this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) )+"px");
-        this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
-                                                $(window).scrollLeft()) + "px");
-    };
-    
-    
+    */
     
     
     
