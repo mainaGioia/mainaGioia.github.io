@@ -64,16 +64,19 @@ $(document).ready(function() {
   			.enter().append("g")
     		.attr("class", "circle")
             .attr("id", function(d){return d;})
-            .attr('width', function(d){return distance})
+            .attr('width', function(d){return distance});
             //.attr('left', function(d, i){return distance*i})
-            .append('path')
-                    .attr('d', arc)
-                    .attr('id', function(d, i){return i+d})
-                    .style('fill', function(d, i){return colors[i]})
-                    .attr("transform", function(d,i){
-                        return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                        + ","+parseFloat(canvas.height()/2)+")"})
-                    .on("click", function(d){openPage(d)});
+            
+        
+        
+    var paths = circles.append('path')
+                .attr('d', arc)
+                .attr('id', function(d, i){return i+d})
+                .style('fill', function(d, i){return colors[i]})
+                .attr("transform", function(d,i){
+                    return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                    + ","+parseFloat(canvas.height()/1.5)+")"})
+                .on("click", function(d){openPage(d);});
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
                     .attr('r', radius)
@@ -84,25 +87,23 @@ $(document).ready(function() {
                     //.style("display", function(d, i){ if(i<2) return "inline"; else return "none";});
 
     
-    svg.selectAll('.circle')
-            .data(ids)
-            .append('path')
+   /* var menus = svg.selectAll('.circle')
+                .append('path')
                 .attr('class', 'menupath')
                 .attr('d', menu)
                 .attr('id', function(d){return d+'path'})
-                /*.attr('stroke', '#f2f2f2')*/
                 .attr("transform", function(d,i){
                         return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
                         + ","+parseFloat(canvas.height()/2)+")"});
-    
+    */
     
             
     
     /* text */ 
     
-    var paths = svg.append("defs");
+    var paths_in_defs = svg.append("defs");
     
-    paths.selectAll('.clippath')
+    paths_in_defs.selectAll('.clippath')
             .data(ids)
             .enter().append("path")
                 .attr('id', function(d,i){return 'text-path'+i})
@@ -110,18 +111,16 @@ $(document).ready(function() {
                 .attr('d', function(d,i){return arc(i)})
                 .attr("transform", function(d,i){
                         return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                        + ","+parseFloat(canvas.height()/2)+")"});
+                        + ","+parseFloat(canvas.height()/1.5)+")"});
     
 
-    var text = svg.selectAll('.circle')
-            .append("clipPath")
-                .attr('id', function(d,i){return 'text-clip'+i})
-                .append('use')
-                    .attr("xlink:href", function(d, i){ return "#"+d+'path';})
+    var text = paths.append("clipPath")
+                        .attr('id', function(d,i){return 'text-clip'+i})
+                        .append('use')
+                        .attr("xlink:href", function(d, i){ return "#"+d+'path';})
    
     
-    svg.selectAll('.circle')
-            .append("text")
+    circles.append("text")
                 .attr('clip-path', function(d, i){return "url(#text-clip"+i+')'})
                 .attr('class', 'textmenu')
                 .attr('x', 170)
@@ -136,6 +135,18 @@ $(document).ready(function() {
                   
     function openPage(page){
         console.log(page);
+        if(page === 'contacts')
+            $('.social_row').toggle();
+        circles.transition()
+                .duration(3000)
+                //bell'effetto
+                //.attr("transform", "translate(320, 0)")
+                .attr("transform", "translate("+(totWidth/3-30)+", 200), rotate(-45), scale(0.7)");
+                 
+        
+        //if(page === 'resume')
+            
+            
     };
 /*          
     circles.append("path")
