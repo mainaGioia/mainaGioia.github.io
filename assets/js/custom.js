@@ -198,7 +198,7 @@ $(document).ready(function() {
     function openPage(page){
         if(page === 'contacts')
             $('.social_row').toggle();
-        circles.transition()
+        d3.select("#"+page).transition()
                 .duration(3000)
                 .attrTween("transform", translateAlong(path.node()))
                 //bell'effetto
