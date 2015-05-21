@@ -109,13 +109,13 @@ html, body {
 
 .point{
     stroke:black;
-    visibility: hidden;
+    /*visibility: hidden;*/
     
 }
 
 
 .line{
-        visibility: hidden;
+    /*visibility: hidden;*/
 
 }
 

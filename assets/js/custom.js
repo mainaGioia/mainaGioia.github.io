@@ -32,11 +32,13 @@ $(document).ready(function() {
 
 
     
-    
+        
     var svg = d3.select("#canvas").append("svg")
             .attr("width",  width)
-            .attr("height", height)
-            .append("g")
+            .attr("height", height);
+    
+            
+    var cerchi = svg.append("g")
                 .attr("class", "circles")
                 .attr('width', (distance*numSections)+'px')
                 .attr("transform", 'translate('
@@ -63,7 +65,7 @@ $(document).ready(function() {
             .endAngle(7)
 
     
-    circles = svg.selectAll(".circle")
+    circles = cerchi.selectAll(".circle")
             .data(ids)
   			.enter().append("g")
     		.attr("class", "circle")
@@ -80,7 +82,7 @@ $(document).ready(function() {
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]})
-                .on("click", function(d){openPage(d);});
+                .on("click", function(d){openPage(d, d3.select(this.parentNode));});
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
                     .attr('r', radius)
@@ -137,9 +139,9 @@ $(document).ready(function() {
     
     var points = [
         [distance/2, circlesheight],
-        /*[distance+distance/2, circlesheight],
+        [distance+distance/2, circlesheight],
         [distance*2+distance/2, circlesheight],
-        [distance*3+distance/2, circlesheight],*/
+        [distance*3+distance/2, circlesheight],
         [end_circles+margin, circlesheight-5],
         [end_circles+margin_right-(margin*2), canvas.height()/1.7],
         [end_circles+margin_right-margin, canvas.height()/3],  //4
@@ -161,19 +163,21 @@ $(document).ready(function() {
     
     
     
-
+    var spline = svg.append("g")
+                    .attr("class", "spline")
+                    .attr("transform", 'translate('
+                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
     
-    var path = d3.select("svg").append("path")
+    
+    var path = spline.append("path")
         .datum(points)
         .attr('class', 'line')
-        .attr('d', d3.svg.line().interpolate('cardinal'))
-        .attr("transform", 'translate('
-                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
+        .attr('d', d3.svg.line().interpolate('cardinal'));       
  
     
     
     
-        var point = svg.selectAll("point")
+        var point = spline.selectAll("point")
             .data(points, function(d) { return d; });
 
         point.enter().append("circle")
@@ -195,10 +199,14 @@ $(document).ready(function() {
  
                   
                   
-    function openPage(page){
+    function openPage(page, elem){
         if(page === 'contacts')
             $('.social_row').toggle();
-        d3.select("#"+page).transition()
+        var group = d3.select(elem.node().parentNode);
+        console.log(group);
+        group.attr('class', function(){return group.attr('class')+" menu"})
+        console.log(group.attr('class'));
+            group.transition()
                 .duration(3000)
                 .attrTween("transform", translateAlong(path.node()))
                 //bell'effetto
@@ -226,7 +234,7 @@ $(document).ready(function() {
         return function(d, i, a) {
             return function(t) {
                 var p = path.getPointAtLength(t * l);
-                return "translate(" + p.x + "," + p.y + ")";
+                return "translate(" + p.x + "," + (p.y - circlesheight) + ")";
             };
         };
     }
