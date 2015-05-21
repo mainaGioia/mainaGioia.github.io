@@ -202,13 +202,17 @@ $(document).ready(function() {
     function openPage(page, elem){
         if(page === 'contacts')
             $('.social_row').toggle();
+        
         var group = d3.select(elem.node().parentNode);
-        console.log(group);
-        group.attr('class', function(){return group.attr('class')+" menu"})
-        console.log(group.attr('class'));
+
+        if(group.attr('class') == "circles"){
             group.transition()
                 .duration(3000)
-                .attrTween("transform", translateAlong(path.node()))
+                .attrTween("transform", translateAlong(path.node(), page))
+        }
+        
+        group.attr('class', function(){return group.attr('class')+" menu"})
+
                 //bell'effetto
                 //.attr("transform", "translate(320, 0)")
                 /*.attr("transform", function(d, i){ 
@@ -229,12 +233,20 @@ $(document).ready(function() {
     }
     
     
-    function translateAlong(path) {
+    function translateAlong(path, page) {
         var l = path.getTotalLength();
         return function(d, i, a) {
             return function(t) {
                 var p = path.getPointAtLength(t * l);
-                return "translate(" + p.x + "," + (p.y - circlesheight) + ")";
+                /*if(d === page){
+                            console.log(d+' '+page);
+                            return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+                                         +"rotate(-90), scale(0.7)";
+                        }
+                        else
+                            return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+
+                                "rotate(-"+(90+2*i)+"), scale(0.5)";*/
+                //console.log(d+' '+i+' '+a);
+                return "translate("+(p.x+(totWidth-distance*numSections)/2)+ "," + (p.y - circlesheight) + ")";
             };
         };
     }
