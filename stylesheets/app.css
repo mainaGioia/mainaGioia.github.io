@@ -84,7 +84,7 @@ html, body {
     left:25%;
 }
 
-.line{
+.spline{
     fill: none;
     stroke: #000;
     
@@ -109,13 +109,13 @@ html, body {
 
 .point{
     stroke:black;
-    visibility: hidden;
+    /*visibility: hidden;*/
     
 }
 
 
 .line{
-    visibility: hidden;
+    /*visibility: hidden;*/
 
 }
 

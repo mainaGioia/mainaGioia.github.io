@@ -27,8 +27,9 @@ $(document).ready(function() {
     var stroke = 2;
     //spanforcircle |-----|-----|
     var distance = 200;
-    var margin = 50;
     var circlesheight = canvas.height()/1.5;
+    var margin_right = (totWidth-distance*numSections) / 2;
+
 
 
     
@@ -41,8 +42,7 @@ $(document).ready(function() {
     var cerchi = svg.append("g")
                 .attr("class", "circles")
                 .attr('width', (distance*numSections)+'px')
-                .attr("transform", 'translate('
-                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
+                .attr("transform", 'translate('+margin_right+',0)');
                 //.attr('left', ((totWidth-spanforcircle*numSections)/2)+'px');
 //                .attr("transform", function(d,i){
 //                    console.log(parseFloat(distance*i)+parseFloat(distance/2));
@@ -82,7 +82,7 @@ $(document).ready(function() {
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]})
-                .on("click", function(d){openPage(d, d3.select(this.parentNode));});
+                .on("click", function(d, i){openPage(i);} );
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
                     .attr('r', radius)
@@ -134,8 +134,9 @@ $(document).ready(function() {
                     .text(function(d){return d});
     
     
-    var margin_right = (canvas.width()-(distance*numSections) ) / 2;
     var end_circles = distance*numSections;
+    var margin = 50;
+
     
     var points = [
         [distance/2, circlesheight],
@@ -164,15 +165,17 @@ $(document).ready(function() {
     
     
     var spline = svg.append("g")
-                    .attr("class", "spline")
-                    .attr("transform", 'translate('
-                      +parseFloat((totWidth-distance*numSections)/2)+',0)');
+                    .attr("class", "splines")
+                    .attr("transform", 'translate('+margin_right+',0)');
     
     
-    var path = spline.append("path")
-        .datum(points)
-        .attr('class', 'line')
-        .attr('d', d3.svg.line().interpolate('cardinal'));       
+    var splines = spline.selectAll(".spline")
+        .data(ids)
+        .enter().append("path")
+                .datum(points, function(d, i){return jQuery.map(function(d,i){ console.log('i: '+i); return points.slice[i, -1]; })} )
+                .attr('class', 'spline')
+                .attr('id', function(d, i){return 'spline'+i})
+                .attr('d', d3.svg.line().interpolate('cardinal'));       
  
     
     
@@ -199,19 +202,20 @@ $(document).ready(function() {
  
                   
                   
-    function openPage(page, elem){
-        if(page === 'contacts')
+    function openPage(i){
+        if(i === 3)
             $('.social_row').toggle();
         
-        var group = d3.select(elem.node().parentNode);
-
-        if(group.attr('class') == "circles"){
-            group.transition()
+        var elem = d3.select(circles[0][i]);
+        console.log(i);
+        
+        if(elem.attr('class') == "circle"){
+            elem.transition()
                 .duration(3000)
-                .attrTween("transform", translateAlong(path.node(), page))
+                .attrTween("transform", translateAlong(d3.select(splines[0][i]).node(), i))
         }
         
-        group.attr('class', function(){return group.attr('class')+" menu"})
+        elem.attr('class', function(){return elem.attr('class')+" menu"})
 
                 //bell'effetto
                 //.attr("transform", "translate(320, 0)")
@@ -233,10 +237,11 @@ $(document).ready(function() {
     }
     
     
-    function translateAlong(path, page) {
+    function translateAlong(path, index) {
         var l = path.getTotalLength();
         return function(d, i, a) {
             return function(t) {
+                console.log(t);
                 var p = path.getPointAtLength(t * l);
                 /*if(d === page){
                             console.log(d+' '+page);
@@ -246,7 +251,7 @@ $(document).ready(function() {
                             return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+
                                 "rotate(-"+(90+2*i)+"), scale(0.5)";*/
                 //console.log(d+' '+i+' '+a);
-                return "translate("+(p.x+(totWidth-distance*numSections)/2)+ "," + (p.y - circlesheight) + ")";
+                return "translate("+ (p.x +(distance*index))+ "," + p.y + ")";
             };
         };
     }
