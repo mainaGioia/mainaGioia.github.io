@@ -84,10 +84,14 @@ html, body {
     left:25%;
 }
 
+.splines{
+    visibility: hidden;
+}
+
+
 .spline{
     fill: none;
     stroke: #000;
-    
 }
 
 .textmenu{
@@ -109,15 +113,8 @@ html, body {
 
 .point{
     stroke:black;
-    /*visibility: hidden;*/
-    
 }
 
-
-.line{
-    /*visibility: hidden;*/
-
-}
 
 
 /* line 407, ../bower_components/foundation/scss/foundation/components/_global.scss */

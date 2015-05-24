@@ -172,7 +172,7 @@ $(document).ready(function() {
     var splines = spline.selectAll(".spline")
         .data(ids)
         .enter().append("path")
-                .datum(points, function(d, i){return jQuery.map(function(d,i){ console.log('i: '+i); return points.slice[i, -1]; })} )
+                .datum( function(d, i){return points.slice(i, 20-i); }) 
                 .attr('class', 'spline')
                 .attr('id', function(d, i){return 'spline'+i})
                 .attr('d', d3.svg.line().interpolate('cardinal'));       
@@ -204,15 +204,14 @@ $(document).ready(function() {
                   
     function openPage(i){
         if(i === 3)
-            $('.social_row').toggle();
-        
+            $('.social_row').toggle();        
         var elem = d3.select(circles[0][i]);
         console.log(i);
         
         if(elem.attr('class') == "circle"){
             elem.transition()
                 .duration(3000)
-                .attrTween("transform", translateAlong(d3.select(splines[0][i]).node(), i))
+                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i))
         }
         
         elem.attr('class', function(){return elem.attr('class')+" menu"})
@@ -241,7 +240,6 @@ $(document).ready(function() {
         var l = path.getTotalLength();
         return function(d, i, a) {
             return function(t) {
-                console.log(t);
                 var p = path.getPointAtLength(t * l);
                 /*if(d === page){
                             console.log(d+' '+page);
@@ -251,7 +249,7 @@ $(document).ready(function() {
                             return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+
                                 "rotate(-"+(90+2*i)+"), scale(0.5)";*/
                 //console.log(d+' '+i+' '+a);
-                return "translate("+ (p.x +(distance*index))+ "," + p.y + ")";
+                return "translate("+ p.x + "," + p.y + ")";
             };
         };
     }
