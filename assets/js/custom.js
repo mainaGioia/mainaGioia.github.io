@@ -77,12 +77,18 @@ $(document).ready(function() {
             //.attr('left', function(d, i){return distance*i})
             
         
-        
+    
+    
     var paths = circles.append('path')
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]})
-                .on("click", function(d, i){openPage(i);} );
+                .on("click", function(d){for(var i=0; i<numSections; i++){
+                                                console.log(i);
+                                                moveCircle(i);
+                                                console.log(i);
+                                             }
+                                        });
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
                     .attr('r', radius)
@@ -146,19 +152,19 @@ $(document).ready(function() {
         [end_circles+margin, circlesheight-5],
         [end_circles+margin_right-(margin*2), canvas.height()/1.7],
         [end_circles+margin_right-margin, canvas.height()/3],  //4
-        [end_circles+margin_right-(margin*1.3), margin+20],  //5
-        [end_circles+margin_right-margin*2.8, margin-15],   //6
-        [end_circles+margin_right-(margin*4), margin*1.4], //7
-        [end_circles+margin_right-(margin*3.9), margin*2.6], //8
-        [end_circles+margin_right-(margin*2.8), margin*3.3], //9
-        [end_circles+margin_right-(margin*1.5), margin*3], //10
-        [end_circles+margin_right-(margin*1.2), margin*2], //11
-        [end_circles+margin_right-(margin*1.5), margin*1.2], //12
-        [end_circles+margin_right-(margin*2.5), margin-10], //8
-        [end_circles+margin_right-(margin*3.5), margin*1.2], //8
-        [end_circles+margin_right-(margin*3.8), margin*2], //8
-        [end_circles+margin_right-(margin*3.5), margin*2.5], //8
-        [end_circles+margin_right-(margin*3.4), margin*2.6] //8
+        [end_circles+margin_right-(margin*1.3), margin+20+50],  //5
+        [end_circles+margin_right-margin*2.8, margin-15+50],   //6
+        [end_circles+margin_right-(margin*4), margin*1.4+50], //7
+        [end_circles+margin_right-(margin*3.9), margin*2.6+50], //8
+        [end_circles+margin_right-(margin*2.8), margin*3.3+50], //9
+        [end_circles+margin_right-(margin*1.5), margin*3+50], //10
+        [end_circles+margin_right-(margin*1.2), margin*2+50], //11
+        [end_circles+margin_right-(margin*1.5), margin*1.2+50], //12
+        [end_circles+margin_right-(margin*2.5), margin-10+50], //8
+        [end_circles+margin_right-(margin*3.5), margin*1.2+50], //8
+        [end_circles+margin_right-(margin*3.8), margin*2+50], //8
+        [end_circles+margin_right-(margin*3.5), margin*2.5+50] //8
+       // [end_circles+margin_right-(margin*3.4), margin*2.6] //8
        
     ];
     
@@ -172,7 +178,7 @@ $(document).ready(function() {
     var splines = spline.selectAll(".spline")
         .data(ids)
         .enter().append("path")
-                .datum( function(d, i){return points.slice(i, 20-i); }) 
+                .datum( function(d, i){return points.slice(i, points.length-i); }) 
                 .attr('class', 'spline')
                 .attr('id', function(d, i){return 'spline'+i})
                 .attr('d', d3.svg.line().interpolate('cardinal'));       
@@ -186,9 +192,6 @@ $(document).ready(function() {
         point.enter().append("circle")
             .attr("r", 1e-6)
             .attr('class', 'point')
-            .transition()
-            .duration(750)
-            .ease("elastic")
             .attr("r", 6.5);
 
         point
@@ -202,20 +205,29 @@ $(document).ready(function() {
  
                   
                   
-    function openPage(i){
-        if(i === 3)
-            $('.social_row').toggle();        
+    function moveCircle(i){
+        var v = 0;
         var elem = d3.select(circles[0][i]);
-        console.log(i);
+        console.log(circles[0][i]);
         
         if(elem.attr('class') == "circle"){
-            elem.transition()
+            elem
+                .transition()
                 .duration(3000)
                 .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i))
+                .each("end", function(){
+                    /*elem.transition()
+                    .duration(3000)
+                    .attr("transform", "translate("+(points[(points.length)-1-i][0])+","
+                          +(points[(points.length)-1-i][1])+") rotate(180), scale(0.5)");*/
+                    
+            })
         }
         
         elem.attr('class', function(){return elem.attr('class')+" menu"})
 
+        if(i === 3)
+            $('.social_row').toggle();        
                 //bell'effetto
                 //.attr("transform", "translate(320, 0)")
                 /*.attr("transform", function(d, i){ 
@@ -234,6 +246,8 @@ $(document).ready(function() {
             
             
     }
+    
+   
     
     
     function translateAlong(path, index) {
