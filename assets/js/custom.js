@@ -84,9 +84,7 @@ $(document).ready(function() {
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]})
                 .on("click", function(d){for(var i=0; i<numSections; i++){
-                                                console.log(i);
                                                 moveCircle(i);
-                                                console.log(i);
                                              }
                                         });
                    /* .attr("cy", canvas.height()/2)
@@ -163,9 +161,20 @@ $(document).ready(function() {
         [end_circles+margin_right-(margin*2.5), margin-10+50], //8
         [end_circles+margin_right-(margin*3.5), margin*1.2+50], //8
         [end_circles+margin_right-(margin*3.8), margin*2+50], //8
-        [end_circles+margin_right-(margin*3.5), margin*2.5+50] //8
+        [end_circles+margin_right-(margin*3.5), margin*2.7+50]
+        //8
        // [end_circles+margin_right-(margin*3.4), margin*2.6] //8
        
+    ];
+    
+    
+    
+    var completeCircle = [
+        [end_circles+margin_right-(margin*2.6), margin*3+50],
+        [end_circles+margin_right-(margin*1.8), margin*2.7+50],        
+        [end_circles+margin_right-(margin*1.5), margin*2+50],
+        [end_circles+margin_right-(margin*1.8), margin*1.2+50],
+        [end_circles+margin_right-(margin*2.5), margin-10+50]
     ];
     
     
@@ -214,6 +223,7 @@ $(document).ready(function() {
             elem
                 .transition()
                 .duration(3000)
+                .attr("transform", "scale(0.5)")
                 .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i))
                 .each("end", function(){
                     /*elem.transition()
@@ -263,7 +273,12 @@ $(document).ready(function() {
                             return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+
                                 "rotate(-"+(90+2*i)+"), scale(0.5)";*/
                 //console.log(d+' '+i+' '+a);
-                return "translate("+ p.x + "," + p.y + ")";
+                if( index == 0 )
+                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-148*t)+")";
+                else if( index == 1 )
+                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-98*t)+")";
+                else
+                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-70*t)+")";
             };
         };
     }
