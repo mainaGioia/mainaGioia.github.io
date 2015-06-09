@@ -73,7 +73,12 @@ $(document).ready(function() {
             .attr('width', function(d){return distance})
             .attr("transform", function(d,i){
                     return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                    + ","+circlesheight+")"});
+                    + ","+circlesheight+")"})
+            .on("click", function(d){ for(var i=0; i<numSections; i++){
+                                                moveCircles(i);
+                                             }
+                                        createCircularSpline();
+                                        });
             //.attr('left', function(d, i){return distance*i})
             
         
@@ -82,11 +87,8 @@ $(document).ready(function() {
     var paths = circles.append('path')
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
-                .style('fill', function(d, i){return colors[i]})
-                .on("click", function(d){for(var i=0; i<numSections; i++){
-                                                moveCircle(i);
-                                             }
-                                        });
+                .style('fill', function(d, i){return colors[i]});
+                
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
                     .attr('r', radius)
@@ -190,20 +192,20 @@ $(document).ready(function() {
                 .datum( function(d, i){return points.slice(i, points.length-i); }) 
                 .attr('class', 'spline')
                 .attr('id', function(d, i){return 'spline'+i})
-                .attr('d', d3.svg.line().interpolate('cardinal'));       
+                .attr('d', d3.svg.line().interpolate('cardinal'));
  
     
     
     
         var point = spline.selectAll("point")
             .data(points, function(d) { return d; });
+    
+    
 
         point.enter().append("circle")
             .attr("r", 1e-6)
             .attr('class', 'point')
-            .attr("r", 6.5);
-
-        point
+            .attr("r", 6.5)
             .attr("cx", function(d) { return d[0]; })
             .attr("cy", function(d) { return d[1]; });
 
@@ -212,73 +214,74 @@ $(document).ready(function() {
         
 
  
+    function createCircularSpline(){
+        points = points.slice(points.length-4, points.lenght).concat(completeCircle);
+                    console.log(points.length);
+
+        spline
+                .selectAll(".circularspline")
+                .data(ids)
+                .enter().append("path")
+                    .datum( function(d, i){return points.concat(points.slice(0, i)); }) 
+                    .attr('class', 'circular spline')
+                    .attr('id', function(d, i){return 'circspline'+i})
+                    .attr('d', d3.svg.line().interpolate('cardinal'));
+    }
+    
                   
                   
-    function moveCircle(i){
-        var v = 0;
+    function moveCircles(i){
         var elem = d3.select(circles[0][i]);
-        console.log(circles[0][i]);
         
         if(elem.attr('class') == "circle"){
             elem
+                .attr('class', function(){return elem.attr('class')+" menu"})
                 .transition()
                 .duration(3000)
-                .attr("transform", "scale(0.5)")
-                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i))
+                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0))
                 .each("end", function(){
-                    /*elem.transition()
-                    .duration(3000)
-                    .attr("transform", "translate("+(points[(points.length)-1-i][0])+","
-                          +(points[(points.length)-1-i][1])+") rotate(180), scale(0.5)");*/
-                    
+                    elem.
+                        on("click", function(d){for(var j=0; j<numSections; j++){
+                                                moveMenu(j);
+                                             }
+                                        });
+                
             })
+            
         }
-        
-        elem.attr('class', function(){return elem.attr('class')+" menu"})
+            
+    }
+    
+    
+    function moveMenu(i){
+        var p = d3.select('#circspline'+i).node();
+        var elem = d3.select(circles[0][i]);
 
-        if(i === 3)
-            $('.social_row').toggle();        
-                //bell'effetto
-                //.attr("transform", "translate(320, 0)")
-                /*.attr("transform", function(d, i){ 
-                        if(d === page){
-                            console.log(d+' '+page);
-                            return "translate("+(totWidth-(distance*numSections)-100)+
-                                ", 200), rotate(-90), scale(0.7)";
-                        }
-                        else
-                            return "translate("+(totWidth-(distance*numSections)+100)+
-                                ", 400), rotate(-"+(90+2*i)+"), scale(0.5)";
-                })*/
-                 
+        elem
+            .transition()
+            .duration(2000)
+            .attrTween("transform", translateAlong(p, i, 1));
         
-        //if(page === 'resume')
-            
-            
     }
     
    
     
     
-    function translateAlong(path, index) {
+    function translateAlong(path, index, flag) {
         var l = path.getTotalLength();
         return function(d, i, a) {
             return function(t) {
                 var p = path.getPointAtLength(t * l);
-                /*if(d === page){
-                            console.log(d+' '+page);
-                            return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+                                         +"rotate(-90), scale(0.7)";
-                        }
-                        else
-                            return "translate("+(p.x + distance/2)+","+ (p.y - circlesheight)+"),"+
-                                "rotate(-"+(90+2*i)+"), scale(0.5)";*/
-                //console.log(d+' '+i+' '+a);
-                if( index == 0 )
-                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-148*t)+")";
-                else if( index == 1 )
-                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-98*t)+")";
-                else
-                    return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-70*t)+")";
+                if(flag == 0){
+                    if( index == 0 )
+                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-148*t)+")";
+                    else if( index == 1 )
+                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-98*t)+")";
+                    else
+                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-70*t)+")";
+                }
+                else{
+                }
             };
         };
     }
