@@ -215,14 +215,14 @@ $(document).ready(function() {
 
  
     function createCircularSpline(){
-        points = points.slice(points.length-4, points.lenght).concat(completeCircle);
-                    console.log(points.length);
+        //points = points.slice(points.length-4, points.lenght).concat(completeCircle);
+          //          console.log(points.length);
 
         spline
                 .selectAll(".circularspline")
                 .data(ids)
                 .enter().append("path")
-                    .datum( function(d, i){return points.concat(points.slice(0, i)); }) 
+                    .datum( function(d, i){return points.slice(points.length-i-1, points.lenght).concat(completeCircle).concat(points.slice(points.length-3, points.length-i)); }) 
                     .attr('class', 'circular spline')
                     .attr('id', function(d, i){return 'circspline'+i})
                     .attr('d', d3.svg.line().interpolate('cardinal'));
@@ -274,13 +274,19 @@ $(document).ready(function() {
                 var p = path.getPointAtLength(t * l);
                 if(flag == 0){
                     if( index == 0 )
-                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-148*t)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-145*t)+")";
                     else if( index == 1 )
                         return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-98*t)+")";
                     else
                         return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-70*t)+")";
                 }
                 else{
+                    if( index == 0 )
+                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-145)+")";
+                    else if( index == 1 )
+                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-98)+")";
+                    else
+                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-70)+")";
                 }
             };
         };
