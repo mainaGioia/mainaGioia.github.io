@@ -65,6 +65,17 @@ $(document).ready(function() {
             .endAngle(7)
 
     
+    d3.selection.prototype.moveToFront = function() {
+        return this.each(function(){
+            this.parentNode.appendChild(this);
+        });
+    };
+    
+    
+    
+    
+    
+    
     circles = cerchi.selectAll(".circle")
             .data(ids)
   			.enter().append("g")
@@ -74,8 +85,15 @@ $(document).ready(function() {
             .attr("transform", function(d,i){
                     return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
                     + ","+circlesheight+")"})
-            .on("click", function(d){ for(var i=0; i<numSections; i++){
-                                                moveCircles(i);
+            .on("click", function(d, i){  var el = d3.select(this);
+                                       el.moveToFront();
+                                       //d3.select('#'+d).style('fill', colors[i]);
+                                       /* circles.sort(function (a, b) { // select the parent and sort the path's
+                                            if (a.id != d.id) return -1;    
+                                            else return 1;  
+                                        }); */
+                                        for(var i=0; i<numSections; i++){
+                                                moveCircles(i, d);
                                              }
                                         createCircularSpline();
                                         });
@@ -88,6 +106,7 @@ $(document).ready(function() {
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
                 .style('fill', function(d, i){return colors[i]});
+                //.style('fill', "#bbbbbb");
                 
                    /* .attr("cy", canvas.height()/2)
                     .attr("cx", function(d,i){return distance*i+distance/2;})
@@ -230,21 +249,25 @@ $(document).ready(function() {
     
                   
                   
-    function moveCircles(i){
+    function moveCircles(i, clicked_id){
         var elem = d3.select(circles[0][i]);
         
         if(elem.attr('class') == "circle"){
             elem
-                .attr('class', function(){return elem.attr('class')+" menu"})
+                .attr('class', function(d){ if(d == clicked_id) return elem.attr('class')+' menu selected';
+                                                 else return elem.attr('class')+" menu"})
                 .transition()
                 .duration(3000)
                 .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0))
                 .each("end", function(){
                     elem.
-                        on("click", function(d){for(var j=0; j<numSections; j++){
-                                                moveMenu(j);
-                                             }
-                                        });
+                        on("click", function(d){    $(this).css('position', 'relative');
+                                                    $(this).css('z-index', 100);  
+                                                    //this.moveToFront();
+                                                    for(var j=0; j<numSections; j++){
+                                                        moveMenu(j);
+                                                    }
+                                                });
                 
             })
             
