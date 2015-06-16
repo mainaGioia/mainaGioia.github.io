@@ -1556,7 +1556,7 @@ select {
         position: absolute;
         width: 50%;
         left: 25%;
-        bottom: 3%;
+        top: 45%;
         
     }
   /* line 216, ../bower_components/foundation/scss/foundation/components/_grid.scss */

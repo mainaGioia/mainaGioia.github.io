@@ -260,8 +260,10 @@ $(document).ready(function() {
                 .duration(3000)
                 .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0))
                 .each("end", function(){
+                    $(".social_row").removeClass("hidden");
                     elem.
-                        on("click", function(d){    $(this).css('position', 'relative');
+                        on("click", function(d){    
+                                                    $(this).css('position', 'relative');
                                                     $(this).css('z-index', 100);  
                                                     //this.moveToFront();
                                                     for(var j=0; j<numSections; j++){
