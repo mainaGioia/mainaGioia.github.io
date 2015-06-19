@@ -71,6 +71,8 @@ $(document).ready(function() {
         });
     };
     
+    
+    
     d3.selection.prototype.moveToBack = function() {
         var node = $(this.node());
         var index;
@@ -96,7 +98,7 @@ $(document).ready(function() {
             .attr("transform", function(d,i){
                     return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
                     + ","+circlesheight+")"})
-            .on("click", function(d, i){  var el = d3.select(this);
+            .on("click", function(d, index){  var el = d3.select(this);
                                        el.moveToFront();
                                        //d3.select('#'+d).style('fill', colors[i]);
                                        /* circles.sort(function (a, b) { // select the parent and sort the path's
@@ -104,7 +106,7 @@ $(document).ready(function() {
                                             else return 1;  
                                         }); */
                                         for(var i=0; i<numSections; i++){
-                                                moveCircles(i, d);
+                                                moveCircles(i, d, index);
                                              }
                                         createCircularSpline();
                                         });
@@ -116,6 +118,7 @@ $(document).ready(function() {
     var paths = circles.append('path')
                 .attr('d', arc)
                 .attr('id', function(d, i){return i+d})
+                .attr('class', 'circlepath')
                 .style('fill', function(d, i){return colors[i]});
                 //.style('fill', "#bbbbbb");
                 
@@ -260,12 +263,13 @@ $(document).ready(function() {
     
     
     
-    function resetCircles(){
-        
+    function openPage(clicked_id){
+        if(clicked_id == 'contacts')
+            $(".social_row").removeClass("hidden");
     }
                   
                   
-    function moveCircles(i, clicked_id){
+    function moveCircles(i, clicked_id, clicked_index){
         var elem = d3.select(circles[0][i]);
         
         
@@ -275,23 +279,21 @@ $(document).ready(function() {
                                                  else return elem.attr('class')+" menu"})
                 .transition()
                 .duration(3000)
-                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0))
+                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0, clicked_index))
                 .each("end", function(){
-                    $(".social_row").removeClass("hidden");
+                    openPage(clicked_id);
                     elem.
                         on("click", function(d){    
-                                                    //$(this).css('position', 'relative');
-                                                    //$(this).css('z-index', 100);
-                                                    var previously_sel = d3.select(".selected");
-                                                    //console.log("quello selezionato prima era "+previously_sel.attr('id'));
-                                                    
+                                                    var previously_sel = d3.select(".selected");                 
                                                     $(previously_sel.node()).removeClass('selected');
                                                     previously_sel.moveToBack();
                                                     var cur = d3.select("#"+d);
                                                     $(cur.node()).addClass('selected');
+                                                    var son = cur[0][0].childNodes[0];
+                                                    var i = $(son).attr('id').substring(0,1);
                                                     cur.moveToFront();
                                                     for(var j=0; j<numSections; j++){
-                                                        moveMenu(j);
+                                                        moveMenu(j,d,i);
                                                     }
                                                 });
                 
@@ -302,41 +304,50 @@ $(document).ready(function() {
     }
     
     
-    function moveMenu(i){
+    function moveMenu(i, clicked_id, clicked_index){
         var p = d3.select('#circspline'+i).node();
         var elem = d3.select(circles[0][i]);
-             
+        
 
         elem
             .transition()
             .duration(2000)
-            .attrTween("transform", translateAlong(p, i, 1));
+            .attrTween("transform", translateAlong(p, i, 1, clicked_index))
+            .each("end", function(){openPage(clicked_id);});
+        
         
     }
     
    
     
     
-    function translateAlong(path, index, flag) {
+    function translateAlong(path, index, flag, clicked_index) {
         var l = path.getTotalLength();
         return function(d, i, a) {
             return function(t) {
                 var p = path.getPointAtLength(t * l);
+                /*move along first path*/
                 if(flag == 0){
+                    var scaling_f = 1-t/3;
+                    if( index == clicked_index )
+                        scaling_f = 1-t/5;
                     if( index == 0 )
-                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-145*t)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-145*t)+")";
                     else if( index == 1 )
-                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-98*t)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-105*t)+")";
                     else
-                        return "translate("+ p.x + "," + p.y + ") scale("+(1-t/3)+") rotate("+(-70*t)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-70*t)+")";
                 }
                 else{
+                    var scaling_f = 0.665;
+                    if( index == clicked_index )
+                        scaling_f = 0.800;
                     if( index == 0 )
-                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-145)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-145)+")";
                     else if( index == 1 )
-                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-98)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-105)+")";
                     else
-                        return "translate("+ p.x + "," + p.y + ") scale("+(0.665)+") rotate("+(-70)+")";
+                        return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-70)+")";
                 }
             };
         };

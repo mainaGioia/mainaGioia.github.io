@@ -107,8 +107,8 @@ html, body {
     /*highligh maybe*/
 }
 
-.menupath{
-    visibility: hidden;
+.circlepath{
+    /*opacity: 0.5;*/
 }
 
 
