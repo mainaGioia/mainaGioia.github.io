@@ -71,7 +71,18 @@ $(document).ready(function() {
         });
     };
     
-    
+    d3.selection.prototype.moveToBack = function() {
+        var node = $(this.node());
+        var index;
+        $.each(ids, function(i,val){
+            if(val == node.attr('id'))
+                index = i;
+        });
+        //console.log($(this.node()).attr('id')+" corrisponde a "+index);
+        return this.each(function(){
+            this.parentNode.insertBefore(this, this.parentNode.childNodes[index]);
+        });
+    };
     
     
     
@@ -247,10 +258,16 @@ $(document).ready(function() {
                     .attr('d', d3.svg.line().interpolate('cardinal'));
     }
     
+    
+    
+    function resetCircles(){
+        
+    }
                   
                   
     function moveCircles(i, clicked_id){
         var elem = d3.select(circles[0][i]);
+        
         
         if(elem.attr('class') == "circle"){
             elem
@@ -263,9 +280,16 @@ $(document).ready(function() {
                     $(".social_row").removeClass("hidden");
                     elem.
                         on("click", function(d){    
-                                                    $(this).css('position', 'relative');
-                                                    $(this).css('z-index', 100);  
-                                                    //this.moveToFront();
+                                                    //$(this).css('position', 'relative');
+                                                    //$(this).css('z-index', 100);
+                                                    var previously_sel = d3.select(".selected");
+                                                    //console.log("quello selezionato prima era "+previously_sel.attr('id'));
+                                                    
+                                                    $(previously_sel.node()).removeClass('selected');
+                                                    previously_sel.moveToBack();
+                                                    var cur = d3.select("#"+d);
+                                                    $(cur.node()).addClass('selected');
+                                                    cur.moveToFront();
                                                     for(var j=0; j<numSections; j++){
                                                         moveMenu(j);
                                                     }
@@ -281,6 +305,7 @@ $(document).ready(function() {
     function moveMenu(i){
         var p = d3.select('#circspline'+i).node();
         var elem = d3.select(circles[0][i]);
+             
 
         elem
             .transition()
