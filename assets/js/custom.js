@@ -264,8 +264,34 @@ $(document).ready(function() {
     
     
     function openPage(clicked_id){
-        if(clicked_id == 'contacts')
-            $(".social_row").removeClass("hidden");
+        var page;
+        var oldpage = $(".open");
+        if(oldpage){
+            oldpage.addClass("hidden");
+            oldpage.removeClass("open");
+        }
+        if(clicked_id == 'contacts'){
+            page = $(".contacts");
+            page.removeClass("hidden");
+        }
+        
+        else if(clicked_id == 'about'){
+            page = $(".about");
+            page.removeClass("hidden");
+        }
+        
+        else if(clicked_id == 'resume'){
+            page = $(".resume");
+            page.removeClass("hidden");
+        }
+        
+        else if(clicked_id == 'blog'){
+            page = $(".blog");
+            page.removeClass("hidden");
+        }
+        
+        page.addClass("open");
+
     }
                   
                   
