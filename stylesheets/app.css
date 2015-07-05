@@ -114,7 +114,6 @@ html, body {
 
 .circles{
     width:50%;
-    left:25%;
 }
 
 .splines{
@@ -131,6 +130,50 @@ html, body {
     font-family: moonflower, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
     font-size: 22px;
 }
+
+
+@media (max-width: 900px) {
+    .textmenu {
+        font-size: 15px;
+    }
+    
+    .social_row{
+        position: absolute;
+        width: 50%;
+        left: 15%;
+        top: 50%;
+    }
+    
+    
+    .title{
+        width:100%;
+        margin:0px 38% 50px 32%;
+        font-size: 22px;
+    }
+    
+    
+    div.about_descr{
+        font-size: 22px;
+        width:70%;
+        text-align: center;
+        margin: -10% 0 0 0;
+    }
+    
+    
+    span.home_descr{
+        display:block;
+    }
+    
+    span.about_descr_small{
+        font-size: 15px;
+        width:70%;
+        text-align: center;
+        margin: -10% 0 0 0;
+    }
+    
+}
+
+
 .circle{
     cursor: pointer;
     stroke-width: 3;
@@ -153,10 +196,10 @@ html, body {
 }
 
 
-.about{
+.home{
     position:absolute;
-    top:35%;
-    left:25%;
+    top:20%;
+    left:36%;
     /*ripetuto*/
     width:50%;
     /*font-family: moonflower;*/
@@ -169,11 +212,27 @@ html, body {
     float:left;
 }
 
-.about_descr{
+.home_descr{
     float:right;
     width:70%;
+    margin:8% 0% 0% 0%;
 }
 
+
+.about_descr{
+    font-size: 32px;
+    width:70%;
+    text-align: center;
+    margin: -10% 0 0 15%;
+}
+
+
+
+.about_descr_small{
+    font-size: 20px;
+    width:70%;
+    text-align: center;
+}
 
 
 /* line 407, ../bower_components/foundation/scss/foundation/components/_global.scss */
@@ -1611,7 +1670,7 @@ select {
     
     
     .title{
-        width:24%;
+        width:100%;
         margin:0px 38% 50px 38%;
         font-size: 32px;
     }
