@@ -27,7 +27,8 @@ $(document).ready(function() {
     var stroke = 2;
     //spanforcircle |-----|-----|
     var distance = ($(window).width() < 900 ) ? 100 : 200;
-    var circlesheight = canvas.height()/1.5;
+//    var circlesheight = ($(window).width() < 900 ) ? 65 : canvas.height()/1.5;
+    var circlesheight = ($(window).width() < 900 ) ? canvas.height()/1.2 : canvas.height()/1.5;
     var margin_right = (totWidth-distance*numSections) / 2;
 
 
