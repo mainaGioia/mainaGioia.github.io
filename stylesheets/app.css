@@ -218,15 +218,18 @@ html, body {
 
 
 .imgme{
-    width:158px;
-    margin:5px 0px 20px 23%;
+    width:22%;
+    margin-top:5px;
+    margin-bottom: 20px;
+    margin-left: 23%;
     float:left;
 }
 
 .home_descr{
-    float:right;
     width:50%;
-    margin:8% 0% 0% 0%;
+    float:right;
+    margin-top:8%;
+    margin-right: 0%;
 }
 
 
