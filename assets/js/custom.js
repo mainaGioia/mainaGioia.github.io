@@ -18,6 +18,8 @@ $(document).ready(function() {
     canvas.css('width', width);
     
     
+    var cell =  ($(window).width() / parseFloat($("body").css("font-size"))) < 40 ? 1 : 0;
+
     var circles;
     var colors = ['#fff59b', '#ff6f69', '#88d8b0', '#ffcc5c'];
     var ids = ['about', 'resume', 'blog', 'contacts'];
@@ -94,7 +96,7 @@ $(document).ready(function() {
             .attr("id", function(d){return d;})
             .attr('width', 80)
             .attr("transform", function(d,i){
-                    return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
+                    return "translate(" +((distance*i)+(distance/2))
                     + ","+circlesheight+") scale(0.2)"})
             .on("click", function(d, index){  var el = d3.select(this);
                                        el.moveToFront();
@@ -110,14 +112,25 @@ $(document).ready(function() {
                                         });
               
     
-    cerchi.selectAll('.circle')
-        .data(ids)
+    d3.select('.home')
     .transition()
-        .delay(function(d, i){return 1000+i*500})
-        .attr("transform" ,  function(d, i) {return "translate("+((distance*i)+(distance/2))+", "+circlesheight+") scale(1)"})
-        .duration(1000)
-        .ease("elastic")
-        .attr('class', 'circle');                    
+        .delay(1500)
+        .each("end", function(){
+            $('.home').fadeOut(1000, function(){
+                cerchi.selectAll('.circle')
+                .data(ids)
+                .transition()
+                    .delay(function(d, i){return i*500})
+                    .attr("transform" ,  function(d, i) {
+                        return "translate("+((distance*i)+(distance/2))+", "+circlesheight+") scale(1)";
+                    })
+                    .duration(1000)
+                    .ease("elastic")
+                    .attr('class', 'circle'); 
+
+            })
+                 
+        })
 
             
             //.attr('left', function(d, i){return distance*i})
