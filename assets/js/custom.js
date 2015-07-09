@@ -24,14 +24,15 @@ $(document).ready(function() {
     var colors = ['#fff59b', '#ff6f69', '#88d8b0', '#ffcc5c'];
     var ids = ['about', 'resume', 'blog', 'contacts'];
     var totWidth = canvas.width();
-    var numSections = ids.length;
-    var radius = 60;
+    var numSections = cell? 2 : ids.length;
+    var radius = 50;
     var stroke = 2;
     //spanforcircle |-----|-----|
     var distance = ($(window).width() < 900 ) ? 150 : 200;
 //    var circlesheight = ($(window).width() < 900 ) ? 65 : canvas.height()/1.5;
-    var circlesheight = ($(window).width() < 900 ) ? canvas.height()/1.2 : canvas.height()/1.5;
-    var margin_right = (totWidth-distance*numSections) / 2;
+    var circlesheight = cell ? $(window).width()/2.5 : canvas.height()/1.5;
+    var circles4 = $(window).width()/2.5;
+    var margin_right = (totWidth-(distance*numSections)) / 2;
 
 
     //alert($(window).width() / parseFloat($("body").css("font-size")));
@@ -96,10 +97,17 @@ $(document).ready(function() {
             .attr("id", function(d){return d;})
             .attr('width', 80)
             .attr("transform", function(d,i){
-                    return "translate(" +((distance*i)+(distance/2))
-                    + ","+circlesheight+") scale(0.2)"})
-            .on("click", function(d, index){  var el = d3.select(this);
-                                       el.moveToFront();
+                    if( cell ) {
+                        return "translate(" +((distance*(i%2))+(distance/2))
+                            + ","+((circles4)*((i<2)?1:2))+") scale(0.2)";
+                    }
+                    else
+                         return "translate(" +((distance*i)+(distance/2))
+                            + ","+circlesheight+") scale(0.2)";
+                    })
+            .on("click", function(d, index){  
+                                        var el = d3.select(this);
+                                        el.moveToFront();
                                        //d3.select('#'+d).style('fill', colors[i]);
                                        /* circles.sort(function (a, b) { // select the parent and sort the path's
                                             if (a.id != d.id) return -1;    
@@ -109,7 +117,7 @@ $(document).ready(function() {
                                                 moveCircles(i, d, index);
                                              }
                                         createCircularSpline();
-                                        });
+                            });
               
     
     d3.select('.home')
@@ -120,9 +128,14 @@ $(document).ready(function() {
                 cerchi.selectAll('.circle')
                 .data(ids)
                 .transition()
-                    .delay(function(d, i){return i*500})
+                    .delay(function(d, i){return 500+i*500})
                     .attr("transform" ,  function(d, i) {
-                        return "translate("+((distance*i)+(distance/2))+", "+circlesheight+") scale(1)";
+                        if(cell)
+                            return "translate("+((distance*(i%2))+(distance/2))
+                            +", "+((circles4)*((i<2)?1:2))+") scale(1)";
+                        else
+                            return "translate("+((distance*i)+(distance/2))
+                            +", "+circlesheight+") scale(1)";
                     })
                     .duration(1000)
                     .ease("elastic")
