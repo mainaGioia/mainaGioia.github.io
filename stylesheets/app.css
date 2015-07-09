@@ -148,13 +148,13 @@ html, body {
     .title{
         width:100%;
         margin:0px 38% 50px 32%;
-        font-size: 22px;
+        font-size: 32px;
     }
     
     
     div.about_descr{
-        font-size: 22px;
-        width:70%;
+        /*font-size: 22px;*/
+        width:100%;
         text-align: center;
         margin: -10% 0 0 0;
     }
@@ -167,7 +167,7 @@ html, body {
     }
     
     span.about_descr_small{
-        font-size: 15px;
+        /*font-size: 15px;*/
         width:70%;
         text-align: center;
         margin: -10% 0 0 0;
@@ -1691,7 +1691,7 @@ select {
     
     
     .social_row{
-        position: absolute;
+        /*position: absolute;*/
         width: 50%;
         left: 25%;
         top: 50%;
