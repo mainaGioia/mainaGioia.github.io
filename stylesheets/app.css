@@ -137,21 +137,8 @@ html, body {
         font-size: 15px;
     }
     
-    .social_row{
-        position: absolute;
-        width: 50%;
-        left: 15%;
-        top: 50%;
-    }
-    
-    
-    .title{
-        width:100%;
-        margin:0px 38% 50px 32%;
-        font-size: 32px;
-    }
-    
-    
+   
+     
     div.about_descr{
         /*font-size: 22px;*/
         width:100%;
@@ -815,6 +802,8 @@ select {
     left: 0%;
     right: auto;
   }
+    
+    
 
   /* line 162, ../bower_components/foundation/scss/foundation/components/_grid.scss */
   .medium-pull-0 {
@@ -1337,6 +1326,8 @@ select {
   }
 }
 @media only screen and (min-width: 64.063em) {
+    
+    
   /* line 159, ../bower_components/foundation/scss/foundation/components/_grid.scss */
   .large-push-0 {
     position: relative;
@@ -1685,8 +1676,8 @@ select {
     
     .title{
         width:100%;
-        margin:0px 38% 50px 38%;
         font-size: 32px;
+        text-align: center;
     }
     
     
@@ -1697,6 +1688,21 @@ select {
         top: 50%;
         
     }
+    
+    
+    .facebook{
+        width:35%;
+    }
+    
+    .behance{
+        width:40%;
+    }
+    
+    .linkedin{
+        width:47%;
+    }
+    
+    
   /* line 216, ../bower_components/foundation/scss/foundation/components/_grid.scss */
   .row.large-collapse > .column,
   .row.large-collapse > .columns {
@@ -2197,7 +2203,16 @@ select {
     clear: both;
   }
 }
+
+
+/*for tablet - medium screen */
+
 @media only screen and (min-width: 40.063em) {
+    
+    
+    
+    
+    
   /* line 62, ../bower_components/foundation/scss/foundation/components/_block-grid.scss */
   .medium-block-grid-1 > li {
     width: 100%;
@@ -2367,6 +2382,25 @@ select {
   }
 }
 @media only screen and (min-width: 64.063em) {
+    
+    .social_row{
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        top: 50%;
+    }
+    
+    
+    .title{
+        width:100%;
+        /*margin:0px 38% 50px 32%;*/
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 32px;
+    }
+    
+    
+    
   /* line 62, ../bower_components/foundation/scss/foundation/components/_block-grid.scss */
   .large-block-grid-1 > li {
     width: 100%;
@@ -3432,8 +3466,33 @@ button::-moz-focus-inner {
     border-top-right-radius: 1000px;
   }
 }
+
+/* smartphone */ 
+
 @media only screen and (max-width: 40em) {
   /* line 185, ../bower_components/foundation/scss/foundation/components/_button-groups.scss */
+    
+    .social_row{
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        top: 50%;
+    }
+    
+    
+    .title{
+        width:85%;
+        /*margin:0px 38% 50px 32%;*/
+        margin-left: 10%;
+        margin-right: 5%;
+        margin-bottom: 50px;
+        font-size: 32px;
+        text-align: center;
+    }
+    
+    
+    
+    
   .button-group.round.stack-for-small > * {
     margin: 0 -2px;
     display: inline-block;
@@ -3630,6 +3689,8 @@ button::-moz-focus-inner {
 
 @media only screen and (min-width: 40.063em) {
   /* line 152, ../bower_components/foundation/scss/foundation/components/_clearing.scss */
+    
+    
   .clearing-main-prev,
   .clearing-main-next {
     position: absolute;
@@ -7634,8 +7695,40 @@ meta.foundation-mq-topbar {
     text-align: justify !important;
   }
 }
+
+
+/*tablet */
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
-  /* line 162, ../bower_components/foundation/scss/foundation/components/_type.scss */
+  
+    .social_row{
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        top: 50%;
+    }
+    
+    
+    .title{
+        width:100%;
+        /*margin:0px 38% 50px 32%;*/
+        margin-bottom: 50px;
+        font-size: 32px;
+        text-align: center
+    }
+    
+    .facebook{
+        width: 55%;
+    }
+    
+    .behance{
+        width: 60%
+    }
+    
+    .linkedin{
+        width: 67%;
+    }
+    
+    /* line 162, ../bower_components/foundation/scss/foundation/components/_type.scss */
   .medium-only-text-left {
     text-align: left !important;
   }

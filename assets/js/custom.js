@@ -32,6 +32,7 @@ $(document).ready(function() {
     var margin_right = (totWidth-distance*numSections) / 2;
 
 
+    alert($(window).width() / parseFloat($("body").css("font-size")));
 
     
         
