@@ -147,11 +147,6 @@ html, body {
     }
     
     
-    span.home_descr{
-        width: 50%;
-        margin: 8% 25% 25% 0%;
-        text-align: center;
-    }
     
     span.about_descr_small{
         /*font-size: 15px;*/
@@ -165,10 +160,6 @@ html, body {
         position: absolute;
     }
     
-    img.imgme{
-        width:60%;
-        margin: 5px 20% 0%;
-    }
     
 }
 
@@ -7632,13 +7623,33 @@ meta.foundation-mq-topbar {
   text-align: justify !important;
 }
 
+/* smartphone */
+
 @media only screen and (max-width: 40em) {
+    
+    .home{
+        position:absolute;
+        width:70%;
+        left:15%;
+        top:25%;
+    }
+    
+    img.imgme{
+        width:60%;
+        margin: 5px 20% 0%;
+    }
+    
+    span.home_descr{
+        width: 50%;
+        margin: 8% 25% 25% 0%;
+        text-align: center;
+    }
     
     .social_row{
         position: absolute;
         width: 50%;
         left: 25%;
-        top: 50%;
+        top: 25%;
     }
     
     .title{
