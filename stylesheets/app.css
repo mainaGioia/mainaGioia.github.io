@@ -3467,47 +3467,11 @@ button::-moz-focus-inner {
   }
 }
 
-/* smartphone */ 
 
 @media only screen and (max-width: 40em) {
   /* line 185, ../bower_components/foundation/scss/foundation/components/_button-groups.scss */
     
-    .social_row{
-        position: absolute;
-        width: 50%;
-        left: 25%;
-        top: 50%;
-    }
-    
-    
-    .title{
-        width:85%;
-        /*margin:0px 38% 50px 32%;*/
-        margin-left: 10%;
-        margin-right: 5%;
-        margin-bottom: 50px;
-        font-size: 32px;
-        text-align: center;
-    }
-    
-    .facebook{
-        width: 90%;
-    }
-    
-    .behance{
-        width: 100%
-    }
-    
-    .linkedin{
-        width: 200%;
-        margin-top: 10%;
-    }
-    
-    
-    
-    
-    
-    
+        
   .button-group.round.stack-for-small > * {
     margin: 0 -2px;
     display: inline-block;
@@ -7669,6 +7633,34 @@ meta.foundation-mq-topbar {
 }
 
 @media only screen and (max-width: 40em) {
+    
+    .social_row{
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        top: 50%;
+    }
+    
+    .title{
+        width:100%;
+        /*margin:0px 38% 50px 32%;*/
+        margin-bottom: 50px;
+        font-size: 32px;
+        text-align: center;
+    }
+    
+    .facebook{
+        width: 90%;
+    }
+    
+    .behance{
+        width: 100%
+    }
+    
+    .linkedin{
+        width: 200%;
+        margin-top: 10%;
+    }
     
   /* line 162, ../bower_components/foundation/scss/foundation/components/_type.scss */
   .small-only-text-left {
