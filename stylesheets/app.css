@@ -3490,6 +3490,21 @@ button::-moz-focus-inner {
         text-align: center;
     }
     
+    .facebook{
+        width: 90%;
+    }
+    
+    .behance{
+        width: 100%
+    }
+    
+    .linkedin{
+        width: 200%;
+        margin-top: 10%;
+    }
+    
+    
+    
     
     
     
@@ -7654,6 +7669,7 @@ meta.foundation-mq-topbar {
 }
 
 @media only screen and (max-width: 40em) {
+    
   /* line 162, ../bower_components/foundation/scss/foundation/components/_type.scss */
   .small-only-text-left {
     text-align: left !important;
@@ -7717,15 +7733,15 @@ meta.foundation-mq-topbar {
     }
     
     .facebook{
-        width: 55%;
+        width: 75%;
     }
     
     .behance{
-        width: 60%
+        width: 80%
     }
     
     .linkedin{
-        width: 67%;
+        width: 87%;
     }
     
     /* line 162, ../bower_components/foundation/scss/foundation/components/_type.scss */
