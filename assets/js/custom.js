@@ -98,7 +98,7 @@ $(document).ready(function() {
             .attr('width', 80)
             .attr("transform", function(d,i){
                     if( cell ) {
-                        return "translate(" +((distance*(i%2))+(distance/2))
+                        return "translate(" +((distance*(i%2))+(distance/2)-10)
                             + ","+((circles4)*((i<2)?1:2))+") scale(0.2)";
                     }
                     else
@@ -131,7 +131,7 @@ $(document).ready(function() {
                     .delay(function(d, i){return 500+i*500})
                     .attr("transform" ,  function(d, i) {
                         if(cell)
-                            return "translate("+((distance*(i%2))+(distance/2))
+                            return "translate("+((distance*(i%2))+(distance/2)-10)
                             +", "+((circles4)*((i<2)?1:2))+") scale(1)";
                         else
                             return "translate("+((distance*i)+(distance/2))
