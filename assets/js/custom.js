@@ -26,13 +26,13 @@ $(document).ready(function() {
     var radius = 60;
     var stroke = 2;
     //spanforcircle |-----|-----|
-    var distance = ($(window).width() < 900 ) ? 80 : 200;
+    var distance = ($(window).width() < 900 ) ? 150 : 200;
 //    var circlesheight = ($(window).width() < 900 ) ? 65 : canvas.height()/1.5;
     var circlesheight = ($(window).width() < 900 ) ? canvas.height()/1.2 : canvas.height()/1.5;
     var margin_right = (totWidth-distance*numSections) / 2;
 
 
-    alert($(window).width() / parseFloat($("body").css("font-size")));
+    //alert($(window).width() / parseFloat($("body").css("font-size")));
 
     
         
@@ -55,7 +55,7 @@ $(document).ready(function() {
     
     var arc = d3.svg.arc()
             .innerRadius(0)
-            .outerRadius(($(window).width() < 900 ) ? 30 : 50)
+            .outerRadius(50)
             .startAngle(0)
             .endAngle(7);
    
@@ -92,10 +92,10 @@ $(document).ready(function() {
   			.enter().append("g")
     		.attr("class", "circle hidden")
             .attr("id", function(d){return d;})
-            .attr('width', 0)
+            .attr('width', 80)
             .attr("transform", function(d,i){
                     return "translate(" +(parseFloat(distance*i)+parseFloat(distance/2))
-                    + ","+circlesheight+")"})
+                    + ","+circlesheight+") scale(0.2)"})
             .on("click", function(d, index){  var el = d3.select(this);
                                        el.moveToFront();
                                        //d3.select('#'+d).style('fill', colors[i]);
@@ -114,6 +114,7 @@ $(document).ready(function() {
         .data(ids)
     .transition()
         .delay(function(d, i){return 1000+i*500})
+        .attr("transform" ,  function(d, i) {return "translate("+((distance*i)+(distance/2))+", "+circlesheight+") scale(1)"})
         .duration(1000)
         .ease("elastic")
         .attr('class', 'circle');                    
@@ -180,7 +181,8 @@ $(document).ready(function() {
     circles.append("text")
                 .attr('clip-path', function(d, i){return "url(#text-clip"+i+')'})
                 .attr('class', 'textmenu')
-                .attr('x', function(){return ($(window).width() < 900 ) ? 100 : 170;})
+                //.attr('x', function(){return ($(window).width() < 900 ) ? 100 : 170;})
+                .attr('x', 170 )
                 .attr('dy', -10)
                 .style('stroke-width', 1)
                 .append('textPath')

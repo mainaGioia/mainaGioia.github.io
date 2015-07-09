@@ -133,9 +133,7 @@ html, body {
 
 
 @media (max-width: 900px) {
-    .textmenu {
-        font-size: 15px;
-    }
+    
     
    
      
@@ -7647,8 +7645,8 @@ meta.foundation-mq-topbar {
     
     .social_row{
         position: absolute;
-        width: 50%;
-        left: 25%;
+        width: 70%;
+        left: 15%;
         top: 25%;
     }
     
@@ -7657,21 +7655,21 @@ meta.foundation-mq-topbar {
         /*margin:0px 38% 50px 32%;*/
         margin-left: 11%;
         margin-right: 4%;
-        margin-bottom: 50px;
+        margin-bottom: 60px;
         font-size: 32px;
         text-align: center;
     }
     
     .facebook{
-        width: 90%;
+        width: 70%;
     }
     
     .behance{
-        width: 100%
+        width: 80%
     }
     
     .linkedin{
-        width: 200%;
+        width: 85%;
         margin-top: 10%;
     }
     
