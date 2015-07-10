@@ -107,13 +107,15 @@ $(document).ready(function() {
                     })
             .on("click", function(d, index){  
                                         var el = d3.select(this);
+                                        console.log("ho cliccato "+el.attr('id'));
                                         el.moveToFront();
                                        //d3.select('#'+d).style('fill', colors[i]);
                                        /* circles.sort(function (a, b) { // select the parent and sort the path's
                                             if (a.id != d.id) return -1;    
                                             else return 1;  
                                         }); */
-                                        for(var i=0; i<numSections; i++){
+                                        for(var i=0; i<ids.length; i++){
+                                                console.log("muovo il cerchio "+i);
                                                 moveCircles(i, d, index);
                                              }
                                         createCircularSpline();
@@ -245,6 +247,9 @@ $(document).ready(function() {
     ];
     
     var points_small = [
+        [(distance+distance/2)-10, circlesheight*1.2],
+        [ distance/2 - 10, circlesheight*1.2 ],
+        [ distance/2 - 10, circlesheight*2 ],
         [(distance+distance/2)-10, circlesheight*2],
         [totWidth-radius*2, circlesheight*1.5],
         [totWidth-radius-10, circlesheight],
@@ -269,9 +274,7 @@ $(document).ready(function() {
     
     
     var completeCircle_small = [
-        [totWidth-radius-10, circlesheight/4],
-        [totWidth-radius-30, circlesheight/6],
-
+        [totWidth-radius-10, circlesheight/4]
     ];
     
     var completeCircle = cell ? completeCircle_small : completeCircle_large;
@@ -361,14 +364,21 @@ $(document).ready(function() {
     function moveCircles(i, clicked_id, clicked_index){
         var elem = d3.select(circles[0][i]);
         
+        var i_spline = i;
+        if ( cell )
+            if(i == 0)
+                i_spline = 1;
+            if (i == 1)
+                i_spline = 0;
         
+        console.log("sono "+i+" e mi muovo lungo la spline "+i_spline);
         if(elem.attr('class') == "circle"){
             elem
                 .attr('class', function(d){ if(d == clicked_id) return elem.attr('class')+' menu selected';
                                                  else return elem.attr('class')+" menu"})
                 .transition()
                 .duration(3000)
-                .attrTween("transform", translateAlong(d3.select('#spline'+i).node(), i, 0, clicked_index))
+                .attrTween("transform", translateAlong(d3.select('#spline'+i_spline).node(), i, 0, clicked_index))
                 .each("end", function(){
                     openPage(clicked_id);
                     elem.
@@ -381,7 +391,7 @@ $(document).ready(function() {
                                                     var son = cur[0][0].childNodes[0];
                                                     var i = $(son).attr('id').substring(0,1);
                                                     cur.moveToFront();
-                                                    for(var j=0; j<numSections; j++){
+                                                    for(var j=0; j<ids.length; j++){
                                                         moveMenu(j,d,i);
                                                     }
                                                 });
