@@ -30,8 +30,8 @@ $(document).ready(function() {
     //spanforcircle |-----|-----|
     var distance = ($(window).width() < 900 ) ? 150 : 200;
 //    var circlesheight = ($(window).width() < 900 ) ? 65 : canvas.height()/1.5;
-    var circlesheight = cell ? $(window).width()/2.5 : canvas.height()/1.5;
-    var circles4 = $(window).width()/2.5;
+    var circles4 = $(window).width()/2;
+    var circlesheight = cell ? circles4 : canvas.height()/1.5;
     var margin_right = (totWidth-(distance*numSections)) / 2;
 
 
@@ -99,7 +99,7 @@ $(document).ready(function() {
             .attr("transform", function(d,i){
                     if( cell ) {
                         return "translate(" +((distance*(i%2))+(distance/2)-10)
-                            + ","+((circles4)*((i<2)?1:2))+") scale(0.2)";
+                            + ","+((circles4)*((i<2)?1.2:2))+") scale(0.2)";
                     }
                     else
                          return "translate(" +((distance*i)+(distance/2))
@@ -132,7 +132,7 @@ $(document).ready(function() {
                     .attr("transform" ,  function(d, i) {
                         if(cell)
                             return "translate("+((distance*(i%2))+(distance/2)-10)
-                            +", "+((circles4)*((i<2)?1:2))+") scale(1)";
+                            +", "+((circles4)*((i<2)?1.2:2))+") scale(1)";
                         else
                             return "translate("+((distance*i)+(distance/2))
                             +", "+circlesheight+") scale(1)";
@@ -220,7 +220,7 @@ $(document).ready(function() {
     var margin = 50;
 
     
-    var points = [
+    var points_large = [
         [distance/2, circlesheight],
         [distance+distance/2, circlesheight],
         [distance*2+distance/2, circlesheight],
@@ -242,12 +242,24 @@ $(document).ready(function() {
         [end_circles+margin_right-(margin*3.5), margin*2.7+50]
         //8
        // [end_circles+margin_right-(margin*3.4), margin*2.6] //8
-       
+    ];
+    
+    var points_small = [
+        [(distance+distance/2)-10, circlesheight*2],
+        [totWidth-radius*2, circlesheight*1.5],
+        [totWidth-radius-10, circlesheight],
+        [totWidth-radius-10, circlesheight/4],
+        [totWidth-radius-30, circlesheight/6],
+        [totWidth-radius-50, circlesheight/4],
+        [totWidth-radius-30, circlesheight/3]       
+        
     ];
     
     
+    var points = cell? points_small : points_large;
     
-    var completeCircle = [
+    
+    var completeCircle_large = [
         [end_circles+margin_right-(margin*2.6), margin*3+50],
         [end_circles+margin_right-(margin*1.8), margin*2.7+50],        
         [end_circles+margin_right-(margin*1.5), margin*2+50],
@@ -255,6 +267,14 @@ $(document).ready(function() {
         [end_circles+margin_right-(margin*2.5), margin-10+50]
     ];
     
+    
+    var completeCircle_small = [
+        [totWidth-radius-10, circlesheight/4],
+        [totWidth-radius-30, circlesheight/6],
+
+    ];
+    
+    var completeCircle = cell ? completeCircle_small : completeCircle_large;
     
     
     var spline = svg.append("g")
@@ -397,9 +417,9 @@ $(document).ready(function() {
                 var p = path.getPointAtLength(t * l);
                 /*move along first path*/
                 if(flag == 0){
-                    var scaling_f = ($(window).width() < 900 ) ? 1-t/6 : 1-t/3;
+                    var scaling_f = cell ? 1-t/1.45 : 1-t/3;
                     if( index == clicked_index )
-                        scaling_f = ($(window).width() < 900 ) ? 1 : 1-t/5;
+                        scaling_f = cell ? 1-t/1.55 : 1-t/5;
                     if( index == 0 )
                         return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-145*t)+")";
                     else if( index == 1 )
@@ -408,9 +428,9 @@ $(document).ready(function() {
                         return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-70*t)+")";
                 }
                 else{
-                    var scaling_f = ($(window).width() < 900 ) ? 0.8 : 0.665;
+                    var scaling_f = cell ? 0.3 : 0.665;
                     if( index == clicked_index )
-                        scaling_f = ($(window).width() < 900 ) ? 1 : 0.8;
+                        scaling_f = cell ? 0.4 : 0.8;
                     if( index == 0 )
                         return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-145)+")";
                     else if( index == 1 )
