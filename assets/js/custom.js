@@ -99,7 +99,7 @@ $(document).ready(function() {
             .attr("transform", function(d,i){
                     if( cell ) {
                         return "translate(" +((distance*(i%2))+(distance/2)-10)
-                            + ","+((circles4)*((i<2)?1:1.8))+") scale(0.2)";
+                            + ","+((circles4)*((i<2)?0.8:1.5))+") scale(0.2)";
                     }
                     else
                          return "translate(" +((distance*i)+(distance/2))
@@ -134,7 +134,7 @@ $(document).ready(function() {
                     .attr("transform" ,  function(d, i) {
                         if(cell)
                             return "translate("+((distance*(i%2))+(distance/2)-10)
-                            +", "+((circles4)*((i<2)?1:1.8))+") scale(1)";
+                            +", "+((circles4)*((i<2)?0.8:1.5))+") scale(1)";
                         else
                             return "translate("+((distance*i)+(distance/2))
                             +", "+circlesheight+") scale(1)";
