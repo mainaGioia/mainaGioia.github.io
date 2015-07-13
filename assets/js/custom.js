@@ -288,7 +288,14 @@ $(document).ready(function() {
     var splines = spline.selectAll(".spline")
         .data(ids)
         .enter().append("path")
-                .datum( function(d, i){return points.slice(i, points.length-i); }) 
+                .datum( function(d, i){
+                    var i_spline = i;
+                    if ( cell ) 
+                        if( i == 0)
+                            i_spline = 1;
+                        if ( i == 1)
+                            i_spline = 0;
+                    return points.slice(i, points.length-i_spline); }) 
                 .attr('class', 'spline')
                 .attr('id', function(d, i){return 'spline'+i})
                 .attr('d', d3.svg.line().interpolate('cardinal'));
@@ -316,7 +323,7 @@ $(document).ready(function() {
     function createCircularSpline(){
         //points = points.slice(points.length-4, points.lenght).concat(completeCircle);
           //          console.log(points.length);
-
+        
         spline
                 .selectAll(".circularspline")
                 .data(ids)
@@ -427,9 +434,9 @@ $(document).ready(function() {
                 var p = path.getPointAtLength(t * l);
                 /*move along first path*/
                 if(flag == 0){
-                    var scaling_f = cell ? 1-t/1.45 : 1-t/3;
+                    var scaling_f = cell ? 1-t/1.43 : 1-t/3;
                     if( index == clicked_index )
-                        scaling_f = cell ? 1-t/1.55 : 1-t/5;
+                        scaling_f = cell ? 1-t/1.67 : 1-t/5;
                     if( index == 0 )
                         return "translate("+ p.x + "," + p.y + ") scale("+scaling_f+") rotate("+(-145*t)+")";
                     else if( index == 1 )
