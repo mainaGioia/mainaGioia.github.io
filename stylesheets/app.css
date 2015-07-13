@@ -191,12 +191,6 @@ html, body {
 }
 
 
-.about_descr{
-    font-size: 32px;
-    width:70%;
-    text-align: center;
-    margin: 0% 0 0 15%;
-}
 
 
 
@@ -1668,6 +1662,15 @@ select {
         top: 50%;
     }
     
+    
+
+    .about_descr{
+        font-size: 32px;
+        width:70%;
+        text-align: center;
+        margin: 0% 0 0 15%;
+    }
+
     .facebook{
         width:35%;
     }
@@ -7627,8 +7630,16 @@ meta.foundation-mq-topbar {
     }
     
     span.home_descr{
-        /*margin: 8% 25% 25% 0%;*/
+        margin: 8% 25% 25% 0%;
         text-align: center;
+    }
+    
+    .about_descr{
+        text-align: center;
+        font-size: 32px;
+        margin:50% 15% 0% 15%
+        
+        
     }
     
     .page{
