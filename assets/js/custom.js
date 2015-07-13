@@ -290,11 +290,12 @@ $(document).ready(function() {
         .enter().append("path")
                 .datum( function(d, i){
                     var i_spline = i;
-                    if ( cell ) 
+                    if ( cell ) {
                         if( i == 0)
                             i_spline = 1;
                         if ( i == 1)
                             i_spline = 0;
+                    }
                     return points.slice(i, points.length-i_spline); }) 
                 .attr('class', 'spline')
                 .attr('id', function(d, i){return 'spline'+i})
@@ -372,11 +373,12 @@ $(document).ready(function() {
         var elem = d3.select(circles[0][i]);
         
         var i_spline = i;
-        if ( cell )
+        if ( cell ){
             if(i == 0)
                 i_spline = 1;
             if (i == 1)
                 i_spline = 0;
+        }
         
         console.log("sono "+i+" e mi muovo lungo la spline "+i_spline);
         if(elem.attr('class') == "circle"){
