@@ -132,16 +132,7 @@ html, body {
 }
 
 
-@media (max-width: 900px) {
-    
-    
-   
-    g.circles{
-        position: absolute;
-    }
-    
-    
-}
+
 
 
 .circle{
@@ -7637,7 +7628,7 @@ meta.foundation-mq-topbar {
     .about_descr{
         text-align: center;
         font-size: 32px;
-        margin:50% 15% 0% 15%
+        margin:25% 15% 0% 15%
         
         
     }
@@ -7724,6 +7715,13 @@ meta.foundation-mq-topbar {
         top: 50%;
     }
     
+    .about_descr{
+        text-align: center;
+        font-size: 32px;
+        margin:50% 15% 0% 15%
+        
+        
+    }
     
     .title{
         width:100%;
