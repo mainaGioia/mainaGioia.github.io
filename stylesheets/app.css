@@ -154,6 +154,7 @@ html, body {
     }
     
     
+    
     g.circles{
         position: absolute;
     }
@@ -224,6 +225,17 @@ html, body {
     text-align: center;
 }
 
+
+#map{
+    visibility: visible;
+    display: block;
+    padding-top: 20%;
+}
+
+
+.city{
+    color: rgba(255,200,255,1);
+}
 
 /* line 407, ../bower_components/foundation/scss/foundation/components/_global.scss */
 *,
