@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="stylesheets/app.css" />
     <script src="bower_components/modernizr/modernizr.js"></script>
     <script type="text/javascript" src="assets/js/d3.min.js"></script>
+    <script type="text/javascript" src="assets/js/d3-tip.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
   </head>
@@ -67,9 +68,19 @@
                 .on("click", null);
       });
 
+
     
     var time = {"London": "1", "Salerno": "6", "Innsbruck": "3", "Atripalda": "10", "Avellino": "1"};
-   
+    
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, -30])
+      .html(function(d) {
+        return " <span style='color:#fff59b'><strong>"+d.id+"</strong></span>";
+      })
+    
+    svg.call(tip);
+
     d3.json("/assets/data/places.topo.json", function(error, cities) {
         g.append("g")
         .attr("id", "cities")
@@ -79,14 +90,16 @@
         .append("path")
             .attr("id", function(d) { return d.id; })
             .attr("class", "city")
-            .attr("d", path.pointRadius(function(d){console.log(d); return 2.5*time[d.id];}))
-            .style('fill', '#ff6f69')
+            .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
+            .style('fill', '#fff59b')
             .style("stroke", '#000000' )
             .style("stroke-width", 0)
-            .on("mouseover", function(d){ d.moveToFront(); });
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
     });
-    
                   
+    
+            
 
     
     
