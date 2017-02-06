@@ -31,7 +31,7 @@
           <div class="about social_row hidden">
               <div class="about_descr">I enjoy coding and drawing<br>
                     and I love cooking to make people happy :)<br>
-                <span class="about_descr_small" >(Everybody is happier in front of a lasagna)</span>
+                <span class="about_descr_small" >(Everybody is happier in front of a pizza)</span>
               </div>
               <div class="about_descr_geo" id="map" >
               <script>
@@ -42,8 +42,8 @@
       
       
       var svg = d3.select("#map").append("svg")
-          .attr("width", width)
-          .attr("height", height);
+            .attr("viewBox", "0 0 "+width+" "+height)
+            .attr("preserveAspectRatio", "xMinYMid");
                   
       var projection = d3.geo.mercator()
         .scale(800)
@@ -70,7 +70,7 @@
 
 
     
-    var time = {"London": "1", "Salerno": "6", "Innsbruck": "3", "Atripalda": "10", "Avellino": "1"};
+    var time = {"London": "1", "Salerno": "6", "Innsbruck": "2", "Atripalda": "13", "Avellino": "1"};
     
     var tip = d3.tip()
       .attr('class', 'd3-tip')
@@ -84,23 +84,34 @@
     d3.json("/assets/data/places.topo.json", function(error, cities) {
         g.append("g")
         .attr("id", "cities")
-        .selectAll("path")
+        .selectAll(".city")
         .data(topojson.feature(cities, cities.objects.places).features)
         .enter()
         .append("path")
             .attr("id", function(d) { return d.id; })
-            .attr("class", "city")
+            .attr("class", "city hidden")
             .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
             .style('fill', '#fff59b')
             .style("stroke", '#000000' )
             .style("stroke-width", 0)
             .on('mouseover', tip.show)
-            .on('mouseout', tip.hide)
+            .on('mouseout', tip.hide);
     });
                   
-    
-            
-
+               
+    d3.selectAll('city')
+    .transition()
+    .delay(function(d, i){console.log(500+i*500); return 500+i*500})
+    .each("end", function(){
+            $('.city').fadeIn(1000, function(){
+                cerchi.selectAll('.circle')
+                .data(ids)
+                .transition()
+                .attr("transform", "scale(1)")
+                    .duration(1000)
+                    .ease("elastic")
+                .attr('class', 'city')})});
+        
     
     
    /* .transition()
