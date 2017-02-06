@@ -89,7 +89,7 @@
         .enter()
         .append("path")
             .attr("id", function(d) { return d.id; })
-            .attr("class", "city hidden")
+            .attr("class", "city")
             .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
             .style('fill', '#fff59b')
             .style("stroke", '#000000' )
@@ -99,20 +99,7 @@
     });
                   
                
-    d3.selectAll('city')
-    .transition()
-    .delay(function(d, i){console.log(500+i*500); return 500+i*500})
-    .each("end", function(){
-            $('.city').fadeIn(1000, function(){
-                cerchi.selectAll('.circle')
-                .data(ids)
-                .transition()
-                .attr("transform", "scale(1)")
-                    .duration(1000)
-                    .ease("elastic")
-                .attr('class', 'city')})});
-        
-    
+  
     
    /* .transition()
         .delay(3000)
