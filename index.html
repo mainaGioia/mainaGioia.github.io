@@ -34,102 +34,6 @@
                 <span class="about_descr_small" >(Everybody is happier in front of a pizza)</span>
               </div>
               <div class="about_descr_geo" id="map" >
-              <script>
-                      
-        var width=$(".social_row").width();
-      var height = 500;
-
-      
-      
-      var svg = d3.select("#map").append("svg")
-            .attr("viewBox", "0 0 "+width+" "+height)
-            .attr("preserveAspectRatio", "xMinYMid");
-                  
-      var projection = d3.geo.mercator()
-        .scale(800)
-        .translate([width / 5, height*2 ]);
-                      
-      var path = d3.geo.path()
-          .projection(projection);
-               
-    
-     var g = svg.append("g");
-      
-      var countries = d3.json("/assets/data/countries.topo.json", function(error, europe) {
-         g.append("g")
-            .attr("id", "countries")
-            .selectAll("path")
-            .data(topojson.feature(europe, europe.objects.countries2).features)
-            .enter()
-            .append("path")
-                .attr("id", function(d) { return d.properties.name; })
-                .attr("d", path)
-                .attr("class", "country")
-                .on("click", null);
-      });
-
-
-    
-    var time = {"London": "1", "Salerno": "6", "Innsbruck": "2", "Atripalda": "13", "Avellino": "1"};
-    
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-5, -20])
-      .html(function(d) {
-        return " <span style='color:#fff59b'><strong>"+d.id+"</strong></span>";
-      })
-    
-    svg.call(tip);
-
-    d3.json("/assets/data/places.topo.json", function(error, cities) {
-        g.append("g")
-        .attr("id", "cities")
-        .selectAll(".city")
-        .data(topojson.feature(cities, cities.objects.places).features)
-        .enter()
-        .append("path")
-            .attr("id", function(d) { return d.id; })
-            .attr("class", "city")
-            .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
-            .style('fill', '#fff59b')
-            .style("stroke", '#000000' )
-            .style("stroke-width", 0)
-            .on('mouseover', tip.show)
-            .on('mouseout', tip.hide);
-    });
-                  
-               
-  
-    
-   /* .transition()
-        .delay(3000)
-        .each("end", function()
-        {
-            
-                cerchi.selectAll('.circle')
-                .data(ids)
-                .transition()
-                    .delay(function(d, i){return 500+i*500})
-                    .attr("transform" ,  function(d, i) {
-                        if(cell)
-                            return "translate("+((distance*(i%2))+(distance/2)-10)
-                            +", "+((circles4)*((i<2)?1.2:2))+") scale(1)";
-                        else
-                            return "translate("+((distance*i)+(distance/2))
-                            +", "+circlesheight+") scale(1)";
-                    })
-                    .duration(1000)
-                    .ease("elastic")
-                    .attr('class', 'circle'); 
-
-        
-                 
-        })*/
-
-
-                    
-                  
-                  </script>
               </div>
           </div>
           
@@ -178,7 +82,8 @@
 
     <script src="bower_components/foundation/js/foundation.min.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>    
+    <script src="assets/js/map.js"></script>
     <script src="assets/js/SVGtojQuery.js"></script>
       <!--<script>
           
