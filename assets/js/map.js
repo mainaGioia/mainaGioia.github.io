@@ -65,6 +65,7 @@ var country;
                
   function get_xyz(d) {
   var bounds = path.bounds(d);
+      console.log("chi e path? ",d, " e bounds: ",bounds);
   var w_scale = (bounds[1][0] - bounds[0][0]) / width;
   var h_scale = (bounds[1][1] - bounds[0][1]) / height;
   var z = .96 / Math.max(w_scale, h_scale);
@@ -73,11 +74,21 @@ var country;
   return [x, y, z];
 }
 
+/*
+function zoom(map) {
+			var bounds = new google.maps.LatLngBounds();
+			map.data.forEach(function (feature) {
+				processPoints(feature.getGeometry(), bounds.extend, bounds);
+			});
+			map.fitBounds(bounds);
+		}*/
+
                   
 function zoom(xyz) {
+    console.log("ci sono");
   g.transition()
     .duration(750)
-    .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
+    .attr("transform", "translate(" + projection.translate() + ")scale(" + 2 + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
     .selectAll(["#countries", "#states", "#cities"])
     .style("stroke-width", 1.0 / xyz[2] + "px")
     .selectAll(".city")
@@ -90,32 +101,40 @@ function pointClicked(d) {
   g.selectAll([".city"]).remove();
   state = null;
 
-  if (d.state) {
-      console.log(d.state);
-    g.selectAll("#" + country.id).style('display', null);
+    var country = d.properties.state;
+
+  if (country) {
+    console.log(country);
+    g.selectAll("#" + d.id).style('display', null);
   }
 
   if (d && country !== d) {
     var xyz = get_xyz(d);
-    country = d;
+    console.log("xyz = ",xyz);
+    /*country = d;*/
 
-    if (d.state  == 'Italy') {
+    if (d.properties.state  == 'Italy') {
       d3.json("/assets/data/extplaces.topo.json", function(error, campania) {
         g.append("g")
           .attr("id", "comuni")
-          .selectAll("path")
+          .selectAll("#cities")
           .data(topojson.feature(campania, campania.objects.places).features)
           .enter()
           .append("path")
           .attr("id", function(d) { return d.id; })
           .attr("class", "active")
           .attr("d", path)
+          .style('fill', '#fff59b')
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide)
+
 
         zoom(xyz);
         g.selectAll("#" + d.id).style('display', 'none');
       });      
     } else {
       zoom(xyz);
+      console.log("Ho zoommato");
     }
   } else {
     var xyz = [width / 2, height / 1.5, 1];
