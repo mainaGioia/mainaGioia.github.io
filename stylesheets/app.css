@@ -131,6 +131,15 @@ html, body {
     font-size: 22px;
 }
 
+.zoomin{
+    
+}
+
+.zoomout{
+    stroke: #999;
+    stroke-width: 0.5;
+}
+
 
 @media (max-width: 900px) {
     

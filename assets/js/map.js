@@ -26,8 +26,6 @@ var scale = 1;
     var countries = d3.json("/assets/data/countries.topo.json", function(error, europe) {
         var euroMap = topojson.feature(europe, europe.objects.countries2);
         
-        console.log(JSON.stringify(path.bounds(euroMap)));
-
         g.append("g")
             .attr("id", "countries")
             .selectAll("path")
@@ -36,9 +34,9 @@ var scale = 1;
             .append("path")
                 .attr("id", function(d) { return d.properties.name; })
                 .attr("d", path)
-                .attr("stroke", "#999")
-                .attr("stroke-width", 0.5/scale)
-                .attr("class", "country");
+                .attr("class", "country zoomout")
+                .on('click', function(d){ var xyz = [width/5, height*2, 1]; zoom(xyz);});
+
       });
 
 
@@ -100,7 +98,7 @@ function zoom(xyz) {
     .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
     .selectAll([".country", "#region", ".comune"])
     .style("stroke-width", 1.0 / xyz[2] + "px")
-      .attr("d", path.pointRadius(function(d){console.log(d); return 0.2*time[d.id];}))
+    .attr("d", path.pointRadius(function(d){console.log(d); return 0.2*time[d.id];}))
 
   
 }
@@ -126,7 +124,7 @@ function pointClicked(d) {
     if (d.properties.state  == 'Italy') {
       var region = d3.json("/assets/data/regions.topo.json", function(error, reg){
           var campania = topojson.feature(reg, reg.objects.regions);
-          g.append("g")
+          /*g.append("g")
           .attr("id", "region")
           .selectAll("#region")
           .data(campania.features)
@@ -135,7 +133,7 @@ function pointClicked(d) {
           .attr("id", function(d) { return d.properties.description; })
           .attr("d", path)
           .style('stroke', '#fff59b')
-          .on('mouseout', function(d){ var xyz = [width/5, height*2, 1]; zoom(xyz);})
+          .on('mouseout', function(d){ var xyz = [width/5, height*2, 1]; zoom(xyz);})*/
           
           xyz = get_xyz(campania);
         
@@ -163,7 +161,7 @@ function pointClicked(d) {
       console.log("Ho zoommato");
     }
   } else {
-    var xyz = [width / 2, height / 1.5, 1];
+    var xyz = [width/5, height*2, 1]; 
     country = null;
     zoom(xyz);
   }
