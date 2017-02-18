@@ -2,6 +2,7 @@
 var width=$(".social_row").width();
 var height = 500;
 var country;
+var scale = 1;
 
       
       
@@ -9,25 +10,34 @@ var country;
             .attr("viewBox", "0 0 "+width+" "+height)
             .attr("preserveAspectRatio", "xMinYMid");
                   
-      var projection = d3.geo.mercator()
+    var projection = d3.geo.mercator()
         .scale(800)
         .translate([width / 5, height*2 ]);
                       
-      var path = d3.geo.path()
+    var path = d3.geo.path()
           .projection(projection);
                
     
-     var g = svg.append("g");
-      
-      var countries = d3.json("/assets/data/countries.topo.json", function(error, europe) {
-         g.append("g")
+    var g = svg.append("g");
+  
+    
+
+
+    var countries = d3.json("/assets/data/countries.topo.json", function(error, europe) {
+        var euroMap = topojson.feature(europe, europe.objects.countries2);
+        
+        console.log(JSON.stringify(path.bounds(euroMap)));
+
+        g.append("g")
             .attr("id", "countries")
             .selectAll("path")
-            .data(topojson.feature(europe, europe.objects.countries2).features)
+            .data(euroMap.features)
             .enter()
             .append("path")
                 .attr("id", function(d) { return d.properties.name; })
                 .attr("d", path)
+                .attr("stroke", "#999")
+                .attr("stroke-width", 0.5/scale)
                 .attr("class", "country");
       });
 
@@ -55,7 +65,7 @@ var country;
             .attr("class", "city")
             .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
             .style('fill', '#fff59b')
-            .style("stroke", '#000000' )
+            .style("stroke", '#fffccb' )
             .style("stroke-width", 0)
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
@@ -65,14 +75,12 @@ var country;
                
   function get_xyz(d) {
   var bounds = path.bounds(d);
-      console.log("data: ", d);
-      console.log("bounds: ",bounds);
+  console.log(JSON.stringify(path.bounds(d)));
   var w_scale = (bounds[1][0] - bounds[0][0]) / width;
   var h_scale = (bounds[1][1] - bounds[0][1]) / height;
   var z = .96 / Math.max(w_scale, h_scale);
-  var x = (bounds[1][0] + bounds[0][0]) / 2;
-  var y = (bounds[1][1] + bounds[0][1]) / 2 + (height / z / 6);
-      console.log(x, " ", y, " ", z);
+  var x = (bounds[1][0] + bounds[0][0]) / 2 - (width/4) / z;
+  var y = (bounds[1][1] + bounds[0][1]) / 2 + (height*1.5 / z );
   return [x, y, z];
 }
 
@@ -87,14 +95,14 @@ function zoom(map) {
 
                   
 function zoom(xyz) {
-    console.log("ci sono");
   g.transition()
     .duration(750)
     .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
-    .selectAll(["#countries", "#states", "#cities"])
+    .selectAll([".country", "#region", ".comune"])
     .style("stroke-width", 1.0 / xyz[2] + "px")
-    .selectAll(".city")
-    .attr("d", path.pointRadius(20.0 / xyz[2]));
+      .attr("d", path.pointRadius(function(d){console.log(d); return 0.2*time[d.id];}))
+
+  
 }
 
 
@@ -117,35 +125,38 @@ function pointClicked(d) {
 
     if (d.properties.state  == 'Italy') {
       var region = d3.json("/assets/data/regions.topo.json", function(error, reg){
+          var campania = topojson.feature(reg, reg.objects.regions);
           g.append("g")
           .attr("id", "region")
-          .selectAll(".region")
-          .data(topojson.feature(reg, reg.objects.regions).features)
+          .selectAll("#region")
+          .data(campania.features)
           .enter()
           .append("path")
           .attr("id", function(d) { return d.properties.description; })
-          .attr("class", "active")
           .attr("d", path)
           .style('stroke', '#fff59b')
+          .on('mouseout', function(d){ var xyz = [width/5, height*2, 1]; zoom(xyz);})
+          
+          xyz = get_xyz(campania);
         
-          xyz = get_xyz(d3.select("#Campania"));
       });
-      d3.json("/assets/data/extplaces.topo.json", function(error, campania) {
+    
+      var c = d3.json("/assets/data/extplaces.topo.json", function(error, campania) {
         g.append("g")
           .attr("id", "comuni")
-          .selectAll("#cities")
+          .selectAll(".comune")
           .data(topojson.feature(campania, campania.objects.places).features)
           .enter()
           .append("path")
           .attr("id", function(d) { return d.id; })
-          .attr("class", "active")
+          .attr("class", "comune")
           .attr("d", path.pointRadius(5))
           .style('fill', '#fff59b')
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide)
 
         zoom(xyz);
-        g.selectAll("#" + d.id).style('display', 'none');
+        /*g.selectAll("#" + d.id).style('display', 'none');*/
       });      
     } else {
       zoom(xyz);
