@@ -82,21 +82,12 @@ var scale = 1;
   return [x, y, z];
 }
 
-/*
-function zoom(map) {
-			var bounds = new google.maps.LatLngBounds();
-			map.data.forEach(function (feature) {
-				processPoints(feature.getGeometry(), bounds.extend, bounds);
-			});
-			map.fitBounds(bounds);
-		}*/
-
-                  
+ 
 function zoom(xyz) {
   g.transition()
     .duration(750)
     .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
-    .selectAll([".country", "#region", ".comune"])
+    .selectAll([".country", "#region", ".comune", ".city"])
     .style("stroke-width", 1.0 / xyz[2] + "px")
     .attr("d", path.pointRadius(function(d){console.log(d); return 0.2*time[d.id];}))
 
@@ -106,7 +97,7 @@ function zoom(xyz) {
 
 
 function pointClicked(d) {
-  g.selectAll([".city"]).remove();
+  /*g.selectAll([".city"]).remove();*/
   state = null;
 
     var country = d.properties.state;
@@ -156,13 +147,46 @@ function pointClicked(d) {
         zoom(xyz);
         /*g.selectAll("#" + d.id).style('display', 'none');*/
       });      
-    } else {
+    }
+      else if (d.properties.state == "United Kingdom"){
+          console.log("uk");
+          var region = d3.json("/assets/data/london.topo.json", function(error, reg){
+          var london = topojson.feature(reg, reg.objects.london);
+              console.log(london);
+          xyz = get_xyz(london);
+          });
+          
+          var c = d3.json("/assets/data/extplaces.topo.json", function(error, campania) {
+        g.append("g")
+          .attr("id", "comuni")
+          .selectAll(".comune")
+          .data(topojson.feature(campania, campania.objects.places).features)
+          .enter()
+          .append("path")
+          .attr("id", function(d) { return d.id; })
+          .attr("class", "comune")
+          .attr("d", path.pointRadius(5))
+          .style('fill', '#fff59b')
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide)
+
+        zoom(xyz);
+                    });      
+
+      }
+      else {
       zoom(xyz);
       console.log("Ho zoommato");
     }
+      
   } else {
     var xyz = [width/5, height*2, 1]; 
     country = null;
+    g.selectAll([".country", "#region", ".city"])
+    .style("stroke", "#999")
+    .style("stroke-width", 0.5)
+    .attr("d", path.pointRadius(function(d){console.log(d); return 2.8*time[d.id];}))
+
     zoom(xyz);
   }
 }
