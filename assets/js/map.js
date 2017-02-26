@@ -152,9 +152,20 @@ function pointClicked(d) {
           console.log("uk");
           var region = d3.json("/assets/data/london.topo.json", function(error, reg){
           var london = topojson.feature(reg, reg.objects.london);
-              console.log(london);
+              
+          g.append("g")
+          .attr("id", "london")
+          .selectAll("#london")
+          .data(london.features)
+          .enter()
+          .append("path")
+          .attr("id", function(d) { return d.id; })
+          .attr("d", path)
+          .style('stroke', '#fff59b');
+              
+              
           xyz = get_xyz(london);
-          });
+        });
           
           var c = d3.json("/assets/data/extplaces.topo.json", function(error, campania) {
         g.append("g")
@@ -170,7 +181,7 @@ function pointClicked(d) {
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide)
 
-        zoom(xyz);
+        /*zoom(xyz);*/
                     });      
 
       }

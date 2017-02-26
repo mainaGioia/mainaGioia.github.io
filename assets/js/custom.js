@@ -107,7 +107,7 @@ $(document).ready(function() {
                     })
             .on("click", function(d, index){  
                                         var el = d3.select(this);
-                                        console.log("ho cliccato "+el.attr('id'));
+                                        console.log(el.attr('id'));
                                         el.moveToFront();
                                        //d3.select('#'+d).style('fill', colors[i]);
                                        /* circles.sort(function (a, b) { // select the parent and sort the path's
@@ -115,7 +115,7 @@ $(document).ready(function() {
                                             else return 1;  
                                         }); */
                                         for(var i=0; i<ids.length; i++){
-                                                console.log("muovo il cerchio "+i);
+                                                console.log("moving the circle "+i);
                                                 moveCircles(i, d, index);
                                              }
                                         createCircularSpline();
